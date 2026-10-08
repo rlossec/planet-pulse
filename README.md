@@ -12,13 +12,22 @@ The project covers the complete development process, from data modelling and app
 
 ### Objectives
 
-- Explore environmental indicators by country.
+- Record environmental indicators by country.
+- Record environmental targets by country.
+- Record environmental monitoring notes by country.
+- Record environmental monitoring priorities by country.
+- Generate AI report with the previous records
 - Build a maintainable and scalable web application.
 - Demonstrate the product through a functional prototype.
 
 ## Features
 
-> This section will be updated as features are implemented.
+- Manage countries
+- Manage Monitoring notes
+- Manage environmental indicators
+- Manage environmental targets
+- Generate an AI-assisted environmental report
+- Manage environmental monitoring priorities
 
 ## Technology
 
@@ -61,31 +70,15 @@ Make sure the following tools are installed:
 Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/rlossec/planet-pulse
 cd planet-pulse
 ```
 
 ## Documentation
 
-The project documentation is divided according to its audience.
-
-### Project Documentation
-
-Documentation related to the project, its requirements and its design can be found in the repository and the project wiki.
-
 ### Developer Guide
 
-The [Developer Guide](https://github.com/rlossec/planet-pulse/wiki/Developer-Guide) contains technical information for developers, including:
-
-- development workflow
-- modelling process
-- Git and branching conventions
-- commit conventions
-- pull requests and code reviews
-- coding guidelines
-- architecture principles
-- testing
-- database setup
+The [Developer Guide](https://github.com/rlossec/planet-pulse/wiki/Developer-Guide) contains technical information for developers.
 
 ## Development
 
