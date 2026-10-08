@@ -6,3 +6,7 @@ backend/.mvn/wrapper/maven-wrapper.jar
 ### IntelliJ IDEA ###
 backend/.idea
 backend/*.iml
+
+
+## Folder Maven : compile files and tests
+target/
