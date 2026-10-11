@@ -10,3 +10,10 @@ backend/*.iml
 
 ## Folder Maven : compile files and tests
 target/
+
+## Local environment
+.env
+
+## Local data downloads
+data/raw/
+
