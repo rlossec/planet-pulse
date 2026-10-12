@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Indicators</title>
+
+    <!-- Bootstrap, Bootstrap Icons, Google Fonts: check for the latest versions -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../css/app.css">
+    <link rel="stylesheet" href="Indicator.css">
+    <script type="module" src="Indicator.js"></script>
+</head>
+<body>
+    <app-indicator></app-indicator>
+
+    <template id="indicator-template">
+        <main class="container py-4">
+            <div id="error" class="alert alert-danger d-none">
+                Missing country code in the URL (example: ?code_iso2=FR).
+            </div>
+
+            <div id="content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1 class="h3 mb-0">Indicators - <span id="country-code"></span></h1>
+                    <button id="toggle-form-btn" type="button" class="btn btn-primary"
+                            aria-expanded="false" aria-controls="form-container">
+                        <i class="bi bi-plus-lg"></i> Add data
+                    </button>
+                </div>
+
+                <div id="form-container"></div>
+            </div>
+        </main>
+    </template>
+
+</body>
+</html>
