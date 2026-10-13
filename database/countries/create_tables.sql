@@ -1,11 +1,11 @@
 BEGIN;
 
 CREATE TABLE t_regions (
-    region_name VARCHAR(9) PRIMARY KEY
+    region_name VARCHAR(10) PRIMARY KEY
 );
 
 CREATE TABLE t_subregions (
-    region_name    VARCHAR(9)  NOT NULL,
+    region_name    VARCHAR(10)  NOT NULL,
     subregion_name VARCHAR(25) NOT NULL,
     PRIMARY KEY (region_name, subregion_name),
     CONSTRAINT fk_subregions_region
@@ -21,7 +21,7 @@ CREATE TABLE t_countries (
     flag_url       TEXT          NOT NULL,
     area_km        NUMERIC(10,2) NOT NULL,
     population     INTEGER       NOT NULL,
-    region_name    VARCHAR(9)    NOT NULL,
+    region_name    VARCHAR(10)    NOT NULL,
     subregion_name VARCHAR(25)   NOT NULL,
     CONSTRAINT uq_countries_country_name
         UNIQUE (country_name),

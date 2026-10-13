@@ -1,22 +1,19 @@
 # Database scripts
 
-Scripts for the `planet_pulse` database and the countries tables.
+Scripts for the `planet_pulse` database.
 
-## Create the database and the tables
+One directory by group of feature :
 
-```bash
-psql -d postgres -f database/01_create_database.sql
-psql -d planet_pulse -f database/02_create_tables.sql
-```
+- `countries`
+- `indicators`
+- `monitoring-notes`
 
-## Empty the tables
+The `local` directory for the local development.
 
-```bash
-psql -d planet_pulse -f database/03_truncate.sql
-```
+## Local
 
-## Drop the tables
+1. Script to Initialize schemas and roles
 
-```bash
-psql -d planet_pulse -f database/04_drop_tables.sql
-```
+## Countries
+
+
