@@ -1,0 +1,4 @@
+
+DROP TABLE IF EXISTS t_countries;
+DROP TABLE IF EXISTS t_subregions;
+DROP TABLE IF EXISTS t_regions;

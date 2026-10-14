@@ -2,13 +2,7 @@
 
 PlanetPulse is a web application for exploring and monitoring environmental indicators across countries.
 
-The project aims to provide an accessible way to explore environmental data and better understand how countries compare on indicators such as CO₂ emissions.
-
 ## Project Overview
-
-PlanetPulse is being developed as a functional prototype for a product presentation to investors.
-
-The project covers the complete development process, from data modelling and application development to testing and deployment.
 
 ### Objectives
 
@@ -33,13 +27,11 @@ The project covers the complete development process, from data modelling and app
 
 PlanetPulse is built with a Java backend, a native JavaScript frontend, and a PostgreSQL database.
 
-| Component  | Technology                 |
-| ---------- | -------------------------- |
-| Backend    | Java 25, Spring Boot       |
-| Frontend   | JavaScript, Web Components |
-| Database   | PostgreSQL                 |
-| API        | Spring Boot                |
-| Build tool | Maven                      |
+| Component | Technology                 |
+| --------- | -------------------------- |
+| Backend   | Java 25, Spring Boot       |
+| Frontend  | JavaScript, Web Components |
+| Database  | PostgreSQL                 |
 
 For more detailed technical information, see the [Developer Guide](https://github.com/rlossec/planet-pulse/wiki/Developer-Guide).
 
@@ -62,7 +54,6 @@ Make sure the following tools are installed:
 
 - Java 25
 - JDK : 25.0.4
-- Maven 3.10.0
 - PostgreSQL 18
 
 ### Installation
@@ -72,6 +63,12 @@ Clone the repository:
 ```bash
 git clone https://github.com/rlossec/planet-pulse
 cd planet-pulse
+```
+
+To run the backend :
+
+```bash
+./mvnw spring-boot:run
 ```
 
 ## Documentation
