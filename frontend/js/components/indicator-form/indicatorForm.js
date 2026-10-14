@@ -1,5 +1,5 @@
 import AppComponent from '../AppComponent.js';
-import hasPositiveIndicatorValue from './IndicatorFormValidation.js';
+import indicatorValidation from './IndicatorFormValidation.js';
 
 // Template: loaded once, before the class is defined
 const html = await (await fetch(new URL('./IndicatorForm.html', import.meta.url))).text();
@@ -27,11 +27,14 @@ export default class IndicatorForm extends AppComponent {
         event.preventDefault();
         const data = Object.fromEntries(new FormData(event.target));
         const validationError = this.querySelector('#validation-error');
-        if (!hasPositiveIndicatorValue(data)) {
+        const errorMessage = indicatorValidation(data)
+        if (errorMessage) {
+            validationError.textContent = errorMessage;
             validationError.classList.remove('d-none');
             return;
         }
         validationError.classList.add('d-none');
+        validationError.textContent = null;
         this.dispatchEvent(new CustomEvent('indicator-submit', { detail: data, bubbles: true }));
         console.log(data);
     }
