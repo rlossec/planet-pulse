@@ -44,7 +44,7 @@ export default class Indicator extends AppComponent {
     #showForm() {
         this.attachChild(this.querySelector('#form-container'),
         'indicator-form',
-        {codeIso2: this.state.iso_code_2});
+        {iso_code_2: this.state.iso_code_2});
         this.querySelector('#toggle-form-btn').setAttribute('aria-expanded', 'true');
     }
 

@@ -1,5 +1,6 @@
 export function convertEmptyStringToNull(data) {
     for (const key in data) {
+        data[key] = data[key]?.trim();
         if (data[key] === '')
             data[key] = null;
     }
