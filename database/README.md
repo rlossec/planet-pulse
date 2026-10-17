@@ -16,4 +16,13 @@ The `local` directory for the local development.
 
 ## Countries
 
+| Script                   | Role                                          |
+| ------------------------ | --------------------------------------------- |
+| `create_tables_brut.sql` | MLD brut: natural keys                        |
+| `create_tables.sql`      | Adapted schema: one artificial id per table   |
+| `drop_tables.sql`        | Drop `t_countries`, `t_subregions`, `t_regions` |
+| `truncate.sql`           | Empty the same tables                         |
+
+The adaptation is described in [docs/mld/features/countries](../docs/mld/features/countries/README.md).
+
 
