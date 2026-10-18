@@ -1,4 +1,4 @@
-package co.simplon.planetpulse.repository;
+package co.simplon.planetpulse.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,0 +1,32 @@
+$kind: http-request
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Error is on the year field\", function () {\r
+
+      \    const body = pm.response.json();\r
+
+      \    pm.expect(body.errors.year).to.eql(\"Year must be between 1800 and 2150.\");\r
+
+      });"
+    language: text/javascript
+order: 1000
+method: POST
+url: "{{baseUrl}}/indicators"
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "isoCode2": "FR",
+      "year": 1700,
+      "co2": 100
+    }

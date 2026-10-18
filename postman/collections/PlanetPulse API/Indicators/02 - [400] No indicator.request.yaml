@@ -1,0 +1,31 @@
+$kind: http-request
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Error all indicators empty\", function () {\r
+
+      \    const body = pm.response.json();\r
+
+      \    pm.expect(body.errors.year).to.eql(\"At least one indicator value must be provided.\");\r
+
+      });"
+    language: text/javascript
+order: 2000
+method: POST
+url: "{{baseUrl}}/indicators"
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "isoCode2": "FR",
+      "year": 2021
+    }
