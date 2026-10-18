@@ -11,8 +11,8 @@ CREATE TABLE t_subregions (
     subregion_id   INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     region_id      INTEGER     NOT NULL,
     subregion_name VARCHAR(25) NOT NULL,
-    CONSTRAINT uq_subregions_region_id_subregion_name
-        UNIQUE (region_id, subregion_name),
+    CONSTRAINT uq_subregions_subregion_name
+        UNIQUE (subregion_name),
     CONSTRAINT fk_subregions_region
         FOREIGN KEY (region_id)
         REFERENCES t_regions (region_id)

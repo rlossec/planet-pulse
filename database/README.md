@@ -18,7 +18,7 @@ The `local` directory for the local development.
 
 | Script                   | Role                                          |
 | ------------------------ | --------------------------------------------- |
-| `create_tables_brut.sql` | MLD brut: natural keys                        |
+| `raw_mld.sql`            | MLD brut: natural keys                        |
 | `create_tables.sql`      | Adapted schema: one artificial id per table   |
 | `drop_tables.sql`        | Drop `t_countries`, `t_subregions`, `t_regions` |
 | `truncate.sql`           | Empty the same tables                         |

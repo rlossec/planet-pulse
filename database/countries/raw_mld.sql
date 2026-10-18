@@ -1,4 +1,4 @@
--- MLD brut 
+-- MLD brut
 BEGIN;
 
 CREATE TABLE t_regions (
@@ -6,9 +6,8 @@ CREATE TABLE t_regions (
 );
 
 CREATE TABLE t_subregions (
-    region_name    VARCHAR(10)  NOT NULL,
-    subregion_name VARCHAR(25) NOT NULL,
-    PRIMARY KEY (region_name, subregion_name),
+    subregion_name VARCHAR(25) PRIMARY KEY,
+    region_name    VARCHAR(10) NOT NULL,
     CONSTRAINT fk_subregions_region
         FOREIGN KEY (region_name)
         REFERENCES t_regions (region_name)
@@ -22,15 +21,14 @@ CREATE TABLE t_countries (
     flag_url       TEXT          NOT NULL,
     area_km        NUMERIC(10,2) NOT NULL,
     population     INTEGER       NOT NULL,
-    region_name    VARCHAR(10)    NOT NULL,
     subregion_name VARCHAR(25)   NOT NULL,
     CONSTRAINT uq_countries_country_name
         UNIQUE (country_name),
     CONSTRAINT uq_countries_flag_url
         UNIQUE (flag_url),
     CONSTRAINT fk_countries_subregion
-        FOREIGN KEY (region_name, subregion_name)
-        REFERENCES t_subregions (region_name, subregion_name)
+        FOREIGN KEY (subregion_name)
+        REFERENCES t_subregions (subregion_name)
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
     CONSTRAINT ck_countries_iso_code_2
