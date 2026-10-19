@@ -26,6 +26,10 @@ Until the countries feature ships its detailed model, a **fictional** `COUNTRY` 
 
 This stub is for developers working on **other features**. Do not treat it as the definitive countries model.
 
+## Logical model
+
+The MLD derived from this MCD, including the countries adaptation, is documented under [docs/mld](../mld/README.md).
+
 ## Organisation
 
 Documentation is grouped **by feature**.
