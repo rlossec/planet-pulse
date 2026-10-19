@@ -1,0 +1,7 @@
+name: local
+values:
+  - key: baseUrl
+    value: 'http://localhost:8080'
+  - key: indicators
+    value: /indicators
+color: 300
