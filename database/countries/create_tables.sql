@@ -1,3 +1,4 @@
+
 BEGIN;
 
 CREATE TABLE t_regions (
@@ -5,10 +6,12 @@ CREATE TABLE t_regions (
 );
 
 CREATE TABLE t_subregions (
-    region_name    VARCHAR(10)  NOT NULL,
+    region_name    VARCHAR(10) NOT NULL,
     subregion_name VARCHAR(25) NOT NULL,
+
     PRIMARY KEY (region_name, subregion_name),
-    CONSTRAINT fk_subregions_region
+
+    CONSTRAINT t_subregions_region_fk
         FOREIGN KEY (region_name)
         REFERENCES t_regions (region_name)
         ON UPDATE CASCADE
@@ -21,23 +24,30 @@ CREATE TABLE t_countries (
     flag_url       TEXT          NOT NULL,
     area_km        NUMERIC(10,2) NOT NULL,
     population     INTEGER       NOT NULL,
-    region_name    VARCHAR(10)    NOT NULL,
+    region_name    VARCHAR(10)   NOT NULL,
     subregion_name VARCHAR(25)   NOT NULL,
-    CONSTRAINT uq_countries_country_name
-        UNIQUE (country_name),
-    CONSTRAINT uq_countries_flag_url
+
+    CONSTRAINT t_countries_flag_url_uq
         UNIQUE (flag_url),
-    CONSTRAINT fk_countries_subregion
+
+    CONSTRAINT t_countries_subregion_fk
         FOREIGN KEY (region_name, subregion_name)
         REFERENCES t_subregions (region_name, subregion_name)
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
-    CONSTRAINT ck_countries_iso_code_2
+
+    CONSTRAINT t_countries_iso_code_2_ck
         CHECK (iso_code_2 ~ '^[A-Z]{2}$'),
-    CONSTRAINT ck_countries_area_km
+
+    CONSTRAINT t_countries_area_km_ck
         CHECK (area_km > 0),
-    CONSTRAINT ck_countries_population
+
+    CONSTRAINT t_countries_population_ck
         CHECK (population >= 0)
 );
+
+
+CREATE UNIQUE INDEX t_countries_country_name_uk
+    ON t_countries (LOWER(country_name));
 
 COMMIT;
