@@ -1,7 +1,4 @@
 HELP.md
-.env
-.vscode
-.postman
 
 ## Config Maven
 backend/.mvn/wrapper/maven-wrapper.jar
@@ -10,6 +7,9 @@ backend/.mvn/wrapper/maven-wrapper.jar
 .idea
 backend/.idea
 backend/*.iml
+
+### Postman ###
+.postman
 
 ### VS Code ###
 .vscode/
