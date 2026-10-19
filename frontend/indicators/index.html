@@ -12,9 +12,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../../../css/app.css">
-    <link rel="stylesheet" href="Indicator.css">
-    <script type="module" src="Indicator.js"></script>
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../js/pages/indicator/Indicator.css">
+    <script type="module" src="../js/pages/indicator/Indicator.js"></script>
 </head>
 <body>
     <app-indicator></app-indicator>
@@ -22,7 +22,7 @@
     <template id="indicator-template">
         <main class="container py-4">
             <div id="error" class="alert alert-danger d-none">
-                Missing country code in the URL (example: ?code_iso2=FR).
+                Missing country code in the URL (example: ?iso_code_2=FR).
             </div>
 
             <div id="content">

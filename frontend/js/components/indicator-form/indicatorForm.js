@@ -34,7 +34,7 @@ export default class IndicatorForm extends AppComponent {
             return;
         }
 
-        data.iso_code_2 = this.props.iso_code_2; // add the country code to the data object
+        data.isoCode2 = this.props.isoCode2; // add the country code to the data object
 
         validationError.classList.add('d-none');
         validationError.textContent = null;

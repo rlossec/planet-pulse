@@ -5,7 +5,7 @@ export default class Indicator extends AppComponent {
 
     beforeRender() {
         const params = new URLSearchParams(window.location.search);
-        this.state = { iso_code_2: params.get('iso_code_2') };
+        this.state = { isoCode2: params.get('iso_code_2') };
         console.log('Indicator state:', this.state); // temporary: for debugging
     }
 
@@ -14,13 +14,13 @@ export default class Indicator extends AppComponent {
     }
 
     afterRender() {
-        const { iso_code_2 } = this.state;
-        if (!iso_code_2) {
+        const { isoCode2 } = this.state;
+        if (!isoCode2) {
             this.querySelector('#error').classList.remove('d-none');
             this.querySelector('#content').classList.add('d-none');
             return;
         }
-        this.querySelector('#country-code').textContent = iso_code_2.toUpperCase();
+        this.querySelector('#country-code').textContent = isoCode2.toUpperCase();
 
         this.querySelector('#toggle-form-btn')
             .addEventListener('click', () => this.#toggleForm());
@@ -44,7 +44,7 @@ export default class Indicator extends AppComponent {
     #showForm() {
         this.attachChild(this.querySelector('#form-container'),
         'indicator-form',
-        {iso_code_2: this.state.iso_code_2});
+        {isoCode2: this.state.isoCode2});
         this.querySelector('#toggle-form-btn').setAttribute('aria-expanded', 'true');
     }
 
