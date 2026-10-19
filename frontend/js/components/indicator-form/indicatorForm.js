@@ -5,10 +5,10 @@ import indicatorValidation from './IndicatorFormValidation.js';
 const html = await (await fetch(new URL('./IndicatorForm.html', import.meta.url))).text();
 
 // Stylesheet: added once to the document, next to the component's own files
-/*const stylesheet = document.createElement('link');
+const stylesheet = document.createElement('link');
 stylesheet.rel = 'stylesheet';
 stylesheet.href = new URL('./IndicatorForm.css', import.meta.url).href;
-document.head.appendChild(stylesheet);*/
+document.head.appendChild(stylesheet);
 
 export default class IndicatorForm extends AppComponent {
 
