@@ -13,13 +13,13 @@ scripts:
 
       \    const body = pm.response.json();\r
 
-      \    pm.expect(body.errors.year).to.eql(\"At least one indicator value must be provided.\");\r
+      \    pm.expect(body.errors.atLeastOneIndicatorProvided).to.eql(\"At least one indicator value must be provided.\");\r
 
       });"
     language: text/javascript
 order: 2000
 method: POST
-url: "{{baseUrl}}/indicators"
+url: "{{baseUrl}}{{indicators}}"
 headers:
   Content-Type: application/json
 body:

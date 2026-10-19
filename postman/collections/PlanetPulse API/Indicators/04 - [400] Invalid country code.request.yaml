@@ -13,13 +13,13 @@ scripts:
 
       \    const body = pm.response.json();\r
 
-      \    pm.expect(body.errors.year).to.eql(\"Country code must be 2 uppercase letters.\");\r
+      \    pm.expect(body.errors.isoCode2).to.eql(\"Country code must be 2 uppercase letters.\");\r
 
       });"
     language: text/javascript
 order: 4000
 method: POST
-url: "{{baseUrl}}/indicators"
+url: "{{baseUrl}}{{indicators}}"
 headers:
   Content-Type: application/json
 body:

@@ -5,11 +5,21 @@ scripts:
 
       \    pm.response.to.have.status(409);\r
 
+      });\r
+
+      \r
+
+      pm.test(\"Error this country and year exists\", function () {\r
+
+      \    pm.expect(pm.response.json().message)\r
+
+      \        .to.eql(\"Indicators already exist for this country and year.\");\r
+
       });"
     language: text/javascript
 order: 7000
 method: POST
-url: "{{baseUrl}}/indicators"
+url: "{{baseUrl}}{{indicators}}"
 headers:
   Content-Type: application/json
 body:

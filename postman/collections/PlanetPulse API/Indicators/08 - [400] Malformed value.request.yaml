@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}{{indicators}}"
+method: POST
+body:
+  type: json
+  content: '{"isoCode2":"FR","year":"abc","co2":100}'
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status is 400\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Message says the body is malformed\", function () {\r
+
+      \    pm.expect(pm.response.json().message).to.eql(\"Request body is missing or malformed.\");\r
+
+      });"
+    language: text/javascript
+order: 8000

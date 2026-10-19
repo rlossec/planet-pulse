@@ -9,7 +9,7 @@ scripts:
     language: text/javascript
 order: 6000
 method: POST
-url: "{{baseUrl}}/indicators"
+url: "{{baseUrl}}{{indicators}}"
 headers:
   Content-Type: application/json
 body:
