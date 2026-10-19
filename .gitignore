@@ -1,5 +1,7 @@
 HELP.md
 .env
+.vscode
+.postman
 
 ## Config Maven
 backend/.mvn/wrapper/maven-wrapper.jar
