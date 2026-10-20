@@ -6,51 +6,37 @@ export function convertEmptyStringToNull(data) {
     }
 }
 
-export function validateRequiredValue(value, errorMessage) {
+export function isNotNull(value) {
     if (!value?.trim()) {
-        return errorMessage;
+        return false;
     }
-
-    return null;
+    return true;
 }
 
-export function validateInteger(value, errorMessage) {
+export function isValidInteger(value) {
     if (!Number.isInteger(Number(value))) {
-        return errorMessage;
+        return false;
     }
-
-    return null;
+    return true;
 }
 
-export function validateDecimal(value, errorMessage) {
-    if (value && !Number.isFinite(Number(value))) {
-        return errorMessage;
-    } 
+export function isValidDecimal(value) {
+    return value && !Number.isFinite(Number(value));
 }
 
-export function validateIntegerRange(value, min, max, errorMessage) {
+export function isValidPercentage(value) {
+    const number = Number.isFinite(Number(value));
+    return number && number >= 0 && number <= 100;
+}
+
+export function isValidIntegerRange(value, min, max) {
     const integer = Number(value);
-    if (integer < min || integer > max) {
-        return errorMessage;
-    }
-    return null;
+    return !(integer < min || integer > max);
 }
 
-export function validateIndicatorRange(value, max,errorMessage) {
-    const range = Number(value);
-    if (range < 0 || range > max) {
-        return errorMessage + max;
-    }
-
-    return null;
+export function isValidDecimalRange(value, max) {
+    const range = Number.isFinite(Number(value));
+    return range && value >= 0 && value <= max;
 }
 
-export function validateAtLeastOneIndicator(data, errorMessage) {
-    const indicatorValues = [data.co2, data.renewableEnergy, data.forest, data.pm25];
-    let allFieldsEmpty = true;
-    for (const value of indicatorValues) {
-        if (value !== null)
-            allFieldsEmpty = false;
-    }                                
-    return allFieldsEmpty ? errorMessage : null;
-}
+
