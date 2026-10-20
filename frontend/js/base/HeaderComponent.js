@@ -3,7 +3,7 @@ import BrandComponent from "./BrandComponent.js";
 
 export default class HeaderComponent extends AppComponent {
   template() {
-    return `
+    return /*html*/`
       <header class="border-bottom bg-white">
         <nav class="navbar navbar-expand-sm container py-3 position-relative">
 
