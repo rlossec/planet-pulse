@@ -1,10 +1,11 @@
-import { convertEmptyStringToNull,
-    validateRequiredValue,
-    validateInteger,
-    validateDecimal,
-    validateIntegerRange,
-    validateIndicatorRange,
-    validateAtLeastOneIndicator } from '../../utils/inputFormValidation.js';
+import { 
+    convertEmptyStringToNull,
+    isNotNull,
+    isValidInteger,
+    isValidDecimal,
+    isValidIntegerRange,
+    isValidDecimalRange, 
+} from '../../utils/inputFormValidation.js';
 
 export const IndicatorValidationError = Object.freeze({
     YEAR_REQUIRED: 'Year is required.',
@@ -25,16 +26,26 @@ export default function indicatorValidation(data) {
     
     convertEmptyStringToNull(data);
 
-    return validateRequiredValue(data.year, IndicatorValidationError.YEAR_REQUIRED)
-        ?? validateInteger(data.year, IndicatorValidationError.YEAR_INTEGER)
-        ?? validateIntegerRange(data.year, 1800, 2150, IndicatorValidationError.YEAR_OUT_OF_RANGE)
-        ?? validateInteger(data.co2, IndicatorValidationError.CO2_INTEGER)
-        ?? validateIndicatorRange(data.co2, 100000, IndicatorValidationError.CO2_OUT_OF_RANGE)
-        ?? validateDecimal(data.renewableEnergy, IndicatorValidationError.RENEWABLE_ENERGY_DECIMAL)
-        ?? validateIndicatorRange(data.renewableEnergy, 100, IndicatorValidationError.RENEWABLE_ENERGY_OUT_OF_RANGE)
-        ?? validateDecimal(data.forest, IndicatorValidationError.FOREST_DECIMAL)
-        ?? validateIndicatorRange(data.forest, 100, IndicatorValidationError.FOREST_OUT_OF_RANGE)
-        ?? validateInteger(data.pm25, IndicatorValidationError.PM25_INTEGER)
-        ?? validateIndicatorRange(data.pm25, 300, IndicatorValidationError.PM25_OUT_OF_RANGE)
-        ?? validateAtLeastOneIndicator(data, IndicatorValidationError.INDICATOR_REQUIRED);
+    return isNotNull(data.year) ? null : IndicatorValidationError.YEAR_REQUIRED
+        ?? isValidInteger(data.year) ? null : IndicatorValidationError.YEAR_INTEGER
+        ?? isValidIntegerRange(data.year, 1800, 2150) ? null : IndicatorValidationError.YEAR_OUT_OF_RANGE
+        ?? isValidInteger(data.co2) ? null : IndicatorValidationError.CO2_INTEGER
+        ?? isValidIntegerRange(data.co2, 0, 100000) ? null : IndicatorValidationError.CO2_OUT_OF_RANGE
+        ?? isValidDecimal(data.renewableEnergy) ? null : IndicatorValidationError.RENEWABLE_ENERGY_DECIMAL
+        ?? isValidDecimalRange(data.renewableEnergy, 100) ? null : IndicatorValidationError.RENEWABLE_ENERGY_OUT_OF_RANGE
+        ?? isValidDecimal(data.forest) ? null : IndicatorValidationError.FOREST_DECIMAL
+        ?? isValidDecimalRange(data.forest, 100) ? null : IndicatorValidationError.FOREST_OUT_OF_RANGE
+        ?? isValidInteger(data.pm25) ? null : IndicatorValidationError.PM25_INTEGER
+        ?? isValidIntegerRange(data.pm25, 0, 300) ? null : IndicatorValidationError.PM25_OUT_OF_RANGE
+        ?? hasAtLeastOneIndicator(data) ? null : IndicatorValidationError.INDICATOR_REQUIRED;
+}
+
+export function hasAtLeastOneIndicator(data) {
+    const indicatorValues = [data.co2, data.renewableEnergy, data.forest, data.pm25];
+    let allFieldsEmpty = true;
+    for (const value of indicatorValues) {
+        if (value !== null)
+            allFieldsEmpty = false;
+    }                                
+    return allFieldsEmpty ? true : false;
 }
