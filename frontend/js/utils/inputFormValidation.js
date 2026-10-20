@@ -21,7 +21,7 @@ export function isValidInteger(value) {
 }
 
 export function isValidDecimal(value) {
-    return value && !Number.isFinite(Number(value));
+    return isNotNull(value) && Number.isFinite(Number(value));
 }
 
 export function isValidPercentage(value) {
@@ -31,12 +31,12 @@ export function isValidPercentage(value) {
 
 export function isValidIntegerRange(value, min, max) {
     const integer = Number(value);
-    return !(integer < min || integer > max);
+    return Number.isInteger(integer) && integer >= min && integer <= max;
 }
 
 export function isValidDecimalRange(value, max) {
-    const range = Number.isFinite(Number(value));
-    return range && value >= 0 && value <= max;
+    const number = Number(value);
+    return Number.isFinite(number) && number >= 0 && number <= max;
 }
 
 

@@ -12,40 +12,40 @@ export const IndicatorValidationError = Object.freeze({
     YEAR_INTEGER: 'Year must be a whole number.',
     YEAR_OUT_OF_RANGE: 'Year must be between 1850 and 2150.',
     CO2_INTEGER: 'CO2 emissions must be a whole number.',
-    CO2_OUT_OF_RANGE: 'CO2 emissions must be between 0 and ',
+    CO2_OUT_OF_RANGE: 'CO2 emissions must be between 0 and 100000.',
     RENEWABLE_ENERGY_DECIMAL: 'Renewable energy must be a number.',
-    RENEWABLE_ENERGY_OUT_OF_RANGE: 'Renewable energy must be between 0 and ',
+    RENEWABLE_ENERGY_OUT_OF_RANGE: 'Renewable energy must be between 0 and 100.',
     FOREST_DECIMAL: 'Forest area must be a number.',
-    FOREST_OUT_OF_RANGE: 'Forest area must be between 0 and ',
+    FOREST_OUT_OF_RANGE: 'Forest area must be between 0 and 100.',
     PM25_INTEGER: 'PM2.5 emissions must be a whole number.',
-    PM25_OUT_OF_RANGE: 'PM2.5 emissions must be between 0 and ',
+    PM25_OUT_OF_RANGE: 'PM2.5 emissions must be between 0 and 300.',
     INDICATOR_REQUIRED: 'At least one indicator value must be provided.',
 });
 
 export default function indicatorValidation(data) {
-    
     convertEmptyStringToNull(data);
 
-    return isNotNull(data.year) ? null : IndicatorValidationError.YEAR_REQUIRED
-        ?? isValidInteger(data.year) ? null : IndicatorValidationError.YEAR_INTEGER
-        ?? isValidIntegerRange(data.year, 1800, 2150) ? null : IndicatorValidationError.YEAR_OUT_OF_RANGE
-        ?? isValidInteger(data.co2) ? null : IndicatorValidationError.CO2_INTEGER
-        ?? isValidIntegerRange(data.co2, 0, 100000) ? null : IndicatorValidationError.CO2_OUT_OF_RANGE
-        ?? isValidDecimal(data.renewableEnergy) ? null : IndicatorValidationError.RENEWABLE_ENERGY_DECIMAL
-        ?? isValidDecimalRange(data.renewableEnergy, 100) ? null : IndicatorValidationError.RENEWABLE_ENERGY_OUT_OF_RANGE
-        ?? isValidDecimal(data.forest) ? null : IndicatorValidationError.FOREST_DECIMAL
-        ?? isValidDecimalRange(data.forest, 100) ? null : IndicatorValidationError.FOREST_OUT_OF_RANGE
-        ?? isValidInteger(data.pm25) ? null : IndicatorValidationError.PM25_INTEGER
-        ?? isValidIntegerRange(data.pm25, 0, 300) ? null : IndicatorValidationError.PM25_OUT_OF_RANGE
-        ?? hasAtLeastOneIndicator(data) ? null : IndicatorValidationError.INDICATOR_REQUIRED;
+    return (isNotNull(data.year) ? null : IndicatorValidationError.YEAR_REQUIRED)
+        ?? (isValidInteger(data.year) ? null : IndicatorValidationError.YEAR_INTEGER)
+        ?? (isValidIntegerRange(data.year, 1850, 2150) ? null : IndicatorValidationError.YEAR_OUT_OF_RANGE)
+        ?? (!isNotNull(data.co2) || isValidInteger(data.co2) ? null : IndicatorValidationError.CO2_INTEGER)
+        ?? (!isNotNull(data.co2) || isValidIntegerRange(data.co2, 0, 100000)
+            ? null : IndicatorValidationError.CO2_OUT_OF_RANGE)
+        ?? (!isNotNull(data.renewableEnergy) || isValidDecimal(data.renewableEnergy)
+            ? null : IndicatorValidationError.RENEWABLE_ENERGY_DECIMAL)
+        ?? (!isNotNull(data.renewableEnergy) || isValidDecimalRange(data.renewableEnergy, 100)
+            ? null : IndicatorValidationError.RENEWABLE_ENERGY_OUT_OF_RANGE)
+        ?? (!isNotNull(data.forest) || isValidDecimal(data.forest)
+            ? null : IndicatorValidationError.FOREST_DECIMAL)
+        ?? (!isNotNull(data.forest) || isValidDecimalRange(data.forest, 100)
+            ? null : IndicatorValidationError.FOREST_OUT_OF_RANGE)
+        ?? (!isNotNull(data.pm25) || isValidInteger(data.pm25) ? null : IndicatorValidationError.PM25_INTEGER)
+        ?? (!isNotNull(data.pm25) || isValidIntegerRange(data.pm25, 0, 300)
+            ? null : IndicatorValidationError.PM25_OUT_OF_RANGE)
+        ?? (hasAtLeastOneIndicator(data) ? null : IndicatorValidationError.INDICATOR_REQUIRED);
 }
 
 export function hasAtLeastOneIndicator(data) {
     const indicatorValues = [data.co2, data.renewableEnergy, data.forest, data.pm25];
-    let allFieldsEmpty = true;
-    for (const value of indicatorValues) {
-        if (value !== null)
-            allFieldsEmpty = false;
-    }                                
-    return allFieldsEmpty ? true : false;
+    return indicatorValues.some(isNotNull);
 }
