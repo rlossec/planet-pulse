@@ -10,6 +10,7 @@ backend/*.iml
 
 ### Postman ###
 .postman
+postman
 
 ### VS Code ###
 .vscode/

@@ -11,7 +11,7 @@ CREATE TABLE t_annual_indicator (
     CONSTRAINT uq_annual_indicator_country_year UNIQUE (iso_code_2, year_),
     CONSTRAINT fk_annual_indicator_country FOREIGN KEY (iso_code_2) REFERENCES t_country (iso_code_2),
 
-    CONSTRAINT ck_annual_indicator_year CHECK (year_ BETWEEN 1800 AND 2150),
+    CONSTRAINT ck_annual_indicator_year CHECK (year_ BETWEEN 1850 AND 2150),
     CONSTRAINT ck_annual_indicator_co2 CHECK (co2_emission BETWEEN 0 AND 100000),
     CONSTRAINT ck_annual_indicator_renewable CHECK (renewable_energy_share BETWEEN 0 AND 100),
     CONSTRAINT ck_annual_indicator_forest CHECK (forest_area BETWEEN 0 AND 100),

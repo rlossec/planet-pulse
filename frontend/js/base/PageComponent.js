@@ -5,7 +5,7 @@ import HeaderComponent from "./HeaderComponent.js";
 // Pages must define their specific content in content()
 export default class PageComponent extends AppComponent {
   template() {
-    return `
+    return /*html*/`
       <header-component></header-component>
 
       <main class="container px-3 px-sm-3 py-4 py-lg-5">

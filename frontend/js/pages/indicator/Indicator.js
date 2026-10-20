@@ -1,16 +1,36 @@
-import AppComponent from '../../components/AppComponent.js';
+import PageComponent from '../../base/PageComponent.js';
 import '../../components/indicator-form/IndicatorForm.js';
 
-export default class Indicator extends AppComponent {
+export default class Indicator extends PageComponent {
 
     beforeRender() {
         const params = new URLSearchParams(window.location.search);
         this.state = { isoCode2: params.get('iso_code_2') };
-        console.log('Indicator state:', this.state); // temporary: for debugging
     }
 
-    template() {
-        return document.getElementById('indicator-template').innerHTML;
+    content() {
+        return /*html*/`
+            <main class="container py-4">
+                <div id="error" class="alert alert-danger d-none">
+                    Missing country code in the URL (example: ?iso_code_2=FR).
+                </div>
+
+                <div id="content">
+                    <div class="mb-4">
+                        <h1 class="h3 text-center text-uppercase mb-1">INDICATORS</h1>
+                        <p class="text-center mb-3">Country: <span id="country-code"></span></p>
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                                <button id="toggle-form-btn" type="button" class="btn btn-primary w-100"
+                                        aria-expanded="false" aria-controls="form-container">
+                                    <i class="bi bi-plus-lg"></i> Add data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="form-container"></div>
+                </div>
+            </main>`;
     }
 
     afterRender() {

@@ -13,7 +13,7 @@ scripts:
 
       \    const body = pm.response.json();\r
 
-      \    pm.expect(body.errors.year).to.eql(\"Year must be between 1800 and 2150.\");\r
+      \    pm.expect(body.errors.year).to.eql(\"Year must be between 1850 and 2150.\");\r
 
       });\r\n"
     language: text/javascript

@@ -19,8 +19,8 @@ public class AnnualIndicatorCreateDto {
     private String isoCode2;
 
     @NotNull(message = "Year is required.")
-    @Min(value = 1800, message = "Year must be between 1800 and 2150.")
-    @Max(value = 2150, message = "Year must be between 1800 and 2150.")
+    @Min(value = 1850, message = "Year must be between 1850 and 2150.")
+    @Max(value = 2150, message = "Year must be between 1850 and 2150.")
     private Integer year;
 
     @Min(value = 0, message = "CO2 emissions must be between 0 and 100000.")

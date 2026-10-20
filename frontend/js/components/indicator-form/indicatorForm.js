@@ -1,19 +1,47 @@
-import AppComponent from '../AppComponent.js';
+import AppComponent from '../../base/AppComponent.js';
 import indicatorValidation from './IndicatorFormValidation.js';
-
-// Template: loaded once, before the class is defined
-const html = await (await fetch(new URL('./IndicatorForm.html', import.meta.url))).text();
-
-// Stylesheet: added once to the document, next to the component's own files
-const stylesheet = document.createElement('link');
-stylesheet.rel = 'stylesheet';
-stylesheet.href = new URL('./IndicatorForm.css', import.meta.url).href;
-document.head.appendChild(stylesheet);
 
 export default class IndicatorForm extends AppComponent {
 
     template() {
-        return html;
+        return /*html*/`
+        <form id="indicator-form" class="card card-body mb-4" novalidate>
+            <div class="row row-cols-1 row-cols-sm-5 g-3">
+                <div class="col">
+                    <label for="year" class="form-label small indicator-field-label">Year</label>
+                    <input id="year" name="year" class="form-control" value="2026">
+                    <small class="form-text">Calendar year</small>
+                </div>
+                <div class="col">
+                    <label for="co2" class="form-label small indicator-field-label">CO2 emissions</label>
+                    <input id="co2" name="co2" class="form-control" placeholder="min: 0, max: 100000" step="any">
+                    <small class="form-text">Million tonnes per year</small>
+                </div>
+                <div class="col">
+                    <label for="renewable-energy" class="form-label small indicator-field-label">Renewable energy</label>
+                    <input id="renewable-energy" name="renewableEnergy" class="form-control" placeholder="min: 0, max: 100"
+                        step="any">
+                    <small class="form-text">% of final consumption</small>
+                </div>
+                <div class="col">
+                    <label for="forest" class="form-label small indicator-field-label">Forest area</label>
+                    <input id="forest" name="forest" class="form-control" placeholder="min: 0, max: 100"
+                        step="any">
+                    <small class="form-text">% of land area</small>
+                </div>
+                <div class="col">
+                    <label for="pm25" class="form-label small indicator-field-label">PM2.5 exposure</label>
+                    <input id="pm25" name="pm25" class="form-control" placeholder="min: 0, max: 300" step="any">
+                    <small class="form-text">µg/m³</small>
+                </div>
+            </div>
+            <!-- Validation Error Message if an error exist (d-none removed)-->
+            <p id="validation-error" class="alert alert-danger mt-3 mb-0 d-none" role="alert"></p>
+            <div class="indicator-form-actions mt-4 pt-3 border-top d-flex justify-content-center gap-2">
+                <button type="submit" class="btn btn-success px-4">Save</button>
+                <button id="cancel-form-btn" type="button" class="btn btn-outline-secondary px-4">Cancel</button>
+            </div>
+        </form>`;
     }
 
     afterRender() {

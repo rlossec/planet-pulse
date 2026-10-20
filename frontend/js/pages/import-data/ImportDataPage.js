@@ -2,7 +2,7 @@ import PageComponent from "../../base/PageComponent.js";
 
 class ImportDataPage extends PageComponent {
   content() {
-    return `
+    return /*html*/`
             <h1>Import Data</h1>
             <button>Import</button>
         `;

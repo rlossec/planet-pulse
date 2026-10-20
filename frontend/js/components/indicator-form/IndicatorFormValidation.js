@@ -9,7 +9,7 @@ import { convertEmptyStringToNull,
 export const IndicatorValidationError = Object.freeze({
     YEAR_REQUIRED: 'Year is required.',
     YEAR_INTEGER: 'Year must be a whole number.',
-    YEAR_OUT_OF_RANGE: 'Year must be between 1800 and 2150.',
+    YEAR_OUT_OF_RANGE: 'Year must be between 1850 and 2150.',
     CO2_INTEGER: 'CO2 emissions must be a whole number.',
     CO2_OUT_OF_RANGE: 'CO2 emissions must be between 0 and ',
     RENEWABLE_ENERGY_DECIMAL: 'Renewable energy must be a number.',
@@ -27,7 +27,7 @@ export default function indicatorValidation(data) {
 
     return validateRequiredValue(data.year, IndicatorValidationError.YEAR_REQUIRED)
         ?? validateInteger(data.year, IndicatorValidationError.YEAR_INTEGER)
-        ?? validateIntegerRange(data.year, 1800, 2150, IndicatorValidationError.YEAR_OUT_OF_RANGE)
+        ?? validateIntegerRange(data.year, 1850, 2150, IndicatorValidationError.YEAR_OUT_OF_RANGE)
         ?? validateInteger(data.co2, IndicatorValidationError.CO2_INTEGER)
         ?? validateIndicatorRange(data.co2, 100000, IndicatorValidationError.CO2_OUT_OF_RANGE)
         ?? validateDecimal(data.renewableEnergy, IndicatorValidationError.RENEWABLE_ENERGY_DECIMAL)
