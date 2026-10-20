@@ -13,6 +13,16 @@ The `local` directory for the local development.
 ## Local
 
 1. Script to Initialize schemas and roles
+```bash
+psql -U postgres -f "database\local\init_database.sql"
+```
+
+2. create_tables.sql
+```bash
+psql -U postgres -d planet_pulse -f "database\ddl\create_tables.sql"
+```
+
+
 
 ## Countries
 
