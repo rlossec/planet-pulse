@@ -45,12 +45,16 @@ export default class Indicator extends AppComponent {
         this.attachChild(this.querySelector('#form-container'),
         'indicator-form',
         {isoCode2: this.state.isoCode2});
-        this.querySelector('#toggle-form-btn').setAttribute('aria-expanded', 'true');
+        const button = this.querySelector('#toggle-form-btn');
+        button.hidden = true;
+        button.setAttribute('aria-expanded', 'true');
     }
 
     #hideForm() {
         this.querySelector('#form-container').replaceChildren();
-        this.querySelector('#toggle-form-btn').setAttribute('aria-expanded', 'false');
+        const button = this.querySelector('#toggle-form-btn');
+        button.hidden = false;
+        button.setAttribute('aria-expanded', 'false');
     }
 }
 
