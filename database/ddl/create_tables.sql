@@ -1,9 +1,5 @@
 BEGIN;
 
-
-
-
-
 CREATE TABLE t_regions (
     region_id   INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
