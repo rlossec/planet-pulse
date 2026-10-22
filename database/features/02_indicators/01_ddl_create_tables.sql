@@ -1,4 +1,4 @@
-CREATE TABLE t_annual_indicator (
+CREATE TABLE t_annual_indicators (
     id                      INTEGER GENERATED ALWAYS AS IDENTITY,
     iso_code_2              CHAR(2)       NOT NULL,
     year_                   SMALLINT      NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE t_annual_indicator (
 
     CONSTRAINT pk_annual_indicator PRIMARY KEY (id),
     CONSTRAINT uq_annual_indicator_country_year UNIQUE (iso_code_2, year_),
-    CONSTRAINT fk_annual_indicator_country FOREIGN KEY (iso_code_2) REFERENCES t_country (iso_code_2),
+    CONSTRAINT fk_annual_indicator_country FOREIGN KEY (iso_code_2) REFERENCES t_countries (iso_code_2),
 
     CONSTRAINT ck_annual_indicator_year CHECK (year_ BETWEEN 1850 AND 2150),
     CONSTRAINT ck_annual_indicator_co2 CHECK (co2_emission BETWEEN 0 AND 100000),

@@ -4,77 +4,114 @@
 
 The `database/` directory contains the SQL scripts required to create, initialize, validate, and populate the PlanetPulse database.
 
-The scripts are organized by responsibility to facilitate local development, testing, and schema maintenance.
+The scripts are grouped by feature, so that each feature owns its tables, its reference data, and its reset scripts.
 
 ## 2. Structure
 
 ```text
 database/
-├── ddl/
-├── countries/
-├── indicators/
-├── fixtures/
-├── inserts/
-├── checks/
-├── local/
-└── README.md
+├── README.md
+├── run.ps1                     # Runner (Windows / PowerShell)
+├── run.sh                      # Runner (Linux / macOS / Git Bash)
+├── setup/
+│   └── 00_create_database.sql
+├── features/
+│   ├── 01_countries/
+│   │   ├── 01_ddl_create_tables.sql
+│   │   ├── 02_dml_insert_regions.sql
+│   │   ├── 03_dml_insert_subregions.sql
+│   │   ├── 04_dml_insert_countries.sql
+│   │   └── reset/
+│   │       ├── ddl_drop_tables.sql
+│   │       └── ddl_truncate_tables.sql
+│   └── 02_indicators/
+│       ├── 01_ddl_create_tables.sql
+│       ├── 02_dml_insert_annual_indicators.sql
+│       └── reset/
+│           ├── ddl_drop_tables.sql
+│           └── ddl_truncate_tables.sql
+└── checks/
+    └── dql_check_connection.sql
 ```
 
-| Directory | Purpose |
-|---|---|
-| `ddl/` | Schema and table creation |
-| `countries/` | Legacy or country-specific scripts |
-| `indicators/` | Indicator-specific scripts |
-| `inserts/` | SQL scripts for inserting data |
-| `checks/` | Connection, schema, and data validation |
-| `local/` | Local environment initialization |
+| Directory                        | Purpose                                                     |
+| -------------------------------- | ----------------------------------------------------------- |
+| `setup/`                         | Database creation, run once against the `postgres` database |
+| `features/<NN>_<feature>/`       | Tables and reference data of one feature                    |
+| `features/<NN>_<feature>/reset/` | Drop and truncate scripts, never run by default             |
+| `checks/`                        | Connection, schema, and data validation                     |
 
-## 3. Execution Order
+## 3. Naming Conventions
 
-The insertion scripts must be executed after the tables have been created, in the following order:
+Feature folders are prefixed with a number: features run in that order. A feature that references another one must have a higher number (`02_indicators` references `01_countries`).
 
-1. `ddl/create_tables.sql`
-2. `inserts/01_insert_regions.sql`
-3. `inserts/02_insert_subregions.sql`
-4. `inserts/03_insert_countries.sql`
-5. `inserts/04_insert_annual_indicators.sql`
+Scripts follow the pattern `<order>_<type>_<action>_<object>.sql`:
 
-The relationships between tables determine this order:
+| Type  | Content                               |
+| ----- | ------------------------------------- |
+| `ddl` | `CREATE`, `ALTER`, `DROP`, `TRUNCATE` |
+| `dml` | `INSERT`, `UPDATE`, `DELETE`          |
+| `dql` | `SELECT` only                         |
+| `dcl` | `GRANT`, `REVOKE`                     |
 
-- Subregions reference regions.
-- Countries reference subregions.
-- Annual indicators reference countries through their two-letter ISO codes.
+Scripts in `reset/` and `checks/` have no order prefix: they are run on demand.
 
-The filenames are prefixed with numbers to make the execution order explicit.
+## 4. Transactions
 
-## 4. Running Scripts with PostgreSQL
+Scripts do not contain `BEGIN` / `COMMIT`. The runners execute each script with `psql --single-transaction -v ON_ERROR_STOP=1`: a script is applied entirely or not at all, and the run stops at the first error.
 
-The following examples assume that PostgreSQL is installed and the database already exists.
+`setup/00_create_database.sql` is the exception: `CREATE DATABASE` cannot run inside a transaction, so it is run manually.
+
+## 5. Running Scripts
+
+The examples assume that PostgreSQL is installed and `psql` is in the `PATH`. The password is read from the `PGPASSWORD` environment variable or from the `pgpass` file.
+
+### Create the Database
+
+```bash
+psql -h localhost -p 5432 -U postgres -d postgres -f database/setup/00_create_database.sql
+```
+
+### Run the Feature Scripts
+
+| Action          | Scripts executed                                              |
+| --------------- | ------------------------------------------------------------- |
+| `all` (default) | Every `ddl` and `dml` script, feature by feature              |
+| `schema`        | `ddl` scripts only                                            |
+| `data`          | `dml` scripts only                                            |
+| `reset`         | `reset/ddl_drop_tables.sql` of each feature, in reverse order |
+
+PowerShell:
+
+```powershell
+./database/run.ps1
+./database/run.ps1 -Action reset
+./database/run.ps1 -Action schema -HostName localhost -Port 5432 -User postgres -Database planet_pulse
+```
+
+Bash:
+
+```bash
+./database/run.sh
+./database/run.sh reset
+PGUSER=postgres PGDATABASE=planet_pulse ./database/run.sh schema
+```
 
 ### Check the Connection
 
 ```bash
-psql -h localhost -p 5432 -U postgres -d planet_pulse -f database/checks/check_connection.sql
+psql -h localhost -p 5432 -U postgres -d planet_pulse -f database/checks/dql_check_connection.sql
 ```
 
-Adjust the host, port, username, and database name to match your environment.
+## 6. Adding a Feature
 
-### Create the Tables
+1. Create `features/<NN>_<feature>/` with the next free number.
+2. Add `01_ddl_create_tables.sql`, then the `dml` scripts in dependency order.
+3. Add `reset/ddl_drop_tables.sql` and `reset/ddl_truncate_tables.sql`.
 
-```bash
-psql -h localhost -p 5432 -U postgres -d planet_pulse -f database/ddl/create_tables.sql
-```
+The runners pick up the new folder automatically.
 
-### Insert Reference Data
-
-```bash
-psql -h localhost -p 5432 -U postgres -d planet_pulse -f database/inserts/01_insert_regions.sql
-psql -h localhost -p 5432 -U postgres -d planet_pulse -f database/inserts/02_insert_subregions.sql
-psql -h localhost -p 5432 -U postgres -d planet_pulse -f database/inserts/03_insert_countries.sql
-psql -h localhost -p 5432 -U postgres -d planet_pulse -f database/inserts/04_insert_annual_indicators.sql
-```
-
-## 5. Available Checks
+## 7. Available Checks
 
 The scripts in the `checks/` directory are used to:
 
