@@ -1,5 +1,6 @@
 import AppComponent from '../../base/AppComponent.js';
 import indicatorValidation from './IndicatorFormValidation.js';
+import { getCurrentYear } from '../../utils/inputFormValidation.js';
 
 export default class IndicatorForm extends AppComponent {
 
@@ -9,29 +10,29 @@ export default class IndicatorForm extends AppComponent {
             <div class="row row-cols-1 row-cols-sm-5 g-3">
                 <div class="col">
                     <label for="year" class="form-label small indicator-field-label">Year</label>
-                    <input id="year" name="year" class="form-control" value="2026">
+                    <input id="year" name="year" class="form-control" value="${getCurrentYear()}">
                     <small class="form-text">Calendar year</small>
                 </div>
                 <div class="col">
                     <label for="co2" class="form-label small indicator-field-label">CO2 emissions</label>
-                    <input id="co2" name="co2" class="form-control" placeholder="min: 0, max: 100000" step="any">
+                    <input id="co2" name="co2" class="form-control" placeholder="min: 0" >
                     <small class="form-text">Million tonnes per year</small>
                 </div>
                 <div class="col">
                     <label for="renewable-energy" class="form-label small indicator-field-label">Renewable energy</label>
-                    <input id="renewable-energy" name="renewableEnergy" class="form-control" placeholder="min: 0, max: 100"
+                    <input id="renewable-energy" name="renewableEnergy" class="form-control" placeholder="in %"
                         step="any">
                     <small class="form-text">% of final consumption</small>
                 </div>
                 <div class="col">
                     <label for="forest" class="form-label small indicator-field-label">Forest area</label>
-                    <input id="forest" name="forest" class="form-control" placeholder="min: 0, max: 100"
+                    <input id="forest" name="forest" class="form-control" placeholder="in %"
                         step="any">
                     <small class="form-text">% of land area</small>
                 </div>
                 <div class="col">
                     <label for="pm25" class="form-label small indicator-field-label">PM2.5 exposure</label>
-                    <input id="pm25" name="pm25" class="form-control" placeholder="min: 0, max: 300" step="any">
+                    <input id="pm25" name="pm25" class="form-control" placeholder="min: 0">
                     <small class="form-text">µg/m³</small>
                 </div>
             </div>

@@ -6,6 +6,10 @@ export function convertEmptyStringToNull(data) {
     }
 }
 
+export function getCurrentYear() {
+    return new Date().getFullYear();
+}
+
 export function isNotNull(value) {
     if (!value?.trim()) {
         return false;
