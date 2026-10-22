@@ -18,9 +18,7 @@ One row stores the environmental indicator values recorded for one country in on
 - Unique record per country and year: (`iso_code_2`, `year_`). The pair is unique; neither column is unique on its own.
 - Foreign key: `iso_code_2` references `t_countries.iso_code_2`.
 - `year_` must be 1850 or later and cannot be later than the current calendar year when submitted.
-- `co2_emission` must be between 0 and 100000 when provided.
+- `co2_emission` must be at least 0.
 - `renewable_energy_share` and `forest_area` must each be between 0 and 100 when provided.
-- `pm25_exposure` must be between 0 and 300 when provided.
+- `pm25_exposure` must be at least 0.
 - At least one of `co2_emission`, `renewable_energy_share`, `forest_area`, or `pm25_exposure` must be provided.
-
-The current DDL in `database/features/02_indicators/01_ddl_create_tables.sql` declares the columns, identity, primary key, country/year unique constraint, and country foreign key, but does not yet declare the range checks or the at-least-one-indicator check above. Add those `CHECK` constraints to the DDL if the database itself must enforce all documented business rules.
