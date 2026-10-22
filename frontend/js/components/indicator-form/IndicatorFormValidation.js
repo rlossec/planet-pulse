@@ -7,20 +7,21 @@ import {
     isValidDecimalRange, 
     getCurrentYear,
 } from '../../utils/inputFormValidation.js';
+import indicatorMessages from '../../../i18n/en/indicators.js';
 
 export const IndicatorValidationError = Object.freeze({
-    YEAR_REQUIRED: 'Year is required.',
-    YEAR_INTEGER: 'Year must be a whole number.',
-    YEAR_OUT_OF_RANGE: 'Year must be between 1850 and the current year.',
-    CO2_INTEGER: 'CO2 emissions must be a whole number.',
-    CO2_OUT_OF_RANGE: 'Minimum CO2 annual emissions is 0.',
-    RENEWABLE_ENERGY_DECIMAL: 'Renewable energy must be a number.',
-    RENEWABLE_ENERGY_OUT_OF_RANGE: 'Renewable energy must be between 0 and 100.',
-    FOREST_DECIMAL: 'Forest area must be a number.',
-    FOREST_OUT_OF_RANGE: 'Forest area must be between 0 and 100.',
-    PM25_INTEGER: 'PM2.5 emissions must be a whole number.',
-    PM25_OUT_OF_RANGE: 'Minimum for PM2.5 emissions is 0',
-    INDICATOR_REQUIRED: 'At least one indicator value must be provided.',
+    YEAR_REQUIRED: indicatorMessages.validation.yearRequired,
+    YEAR_INTEGER: indicatorMessages.validation.yearInteger,
+    YEAR_OUT_OF_RANGE: indicatorMessages.validation.yearOutOfRange,
+    CO2_INTEGER: indicatorMessages.validation.co2Integer,
+    CO2_OUT_OF_RANGE: indicatorMessages.validation.co2OutOfRange,
+    RENEWABLE_ENERGY_DECIMAL: indicatorMessages.validation.renewableEnergyDecimal,
+    RENEWABLE_ENERGY_OUT_OF_RANGE: indicatorMessages.validation.renewableEnergyOutOfRange,
+    FOREST_DECIMAL: indicatorMessages.validation.forestDecimal,
+    FOREST_OUT_OF_RANGE: indicatorMessages.validation.forestOutOfRange,
+    PM25_INTEGER: indicatorMessages.validation.pm25Integer,
+    PM25_OUT_OF_RANGE: indicatorMessages.validation.pm25OutOfRange,
+    INDICATOR_REQUIRED: indicatorMessages.validation.indicatorRequired,
 });
 
 export default function indicatorValidation(data) {
