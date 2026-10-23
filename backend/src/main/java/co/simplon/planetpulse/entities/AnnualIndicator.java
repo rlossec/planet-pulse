@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "t_annual_indicator")
+@Table(name = "t_annual_indicators")
 public class AnnualIndicator {
 
     @Id

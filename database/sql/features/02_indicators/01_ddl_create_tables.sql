@@ -9,5 +9,5 @@ CREATE TABLE t_annual_indicators (
 
     CONSTRAINT pk_annual_indicators PRIMARY KEY (id),
     CONSTRAINT uq_annual_indicators_country_year UNIQUE (iso_code_2, year_),
-    CONSTRAINT fk_annual_indicators_country FOREIGN KEY (iso_code_2) REFERENCES t_countries (iso_code_2),
+    CONSTRAINT fk_annual_indicators_country FOREIGN KEY (iso_code_2) REFERENCES t_countries (iso_code_2)
 );
