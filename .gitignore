@@ -21,3 +21,6 @@ target/
 ## Local data downloads
 data/raw/
 
+#config vscode
+.vscode
+

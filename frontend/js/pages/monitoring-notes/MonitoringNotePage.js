@@ -1,57 +1,46 @@
-import HeaderComponent from "./HeaderComponent.js";
+import HeaderComponent from "../../base/HeaderComponent.js";
+import AppComponent from "../../base/AppComponent.js";
 
-export default class HeaderComponent extends AppComponent {
+export default class MonitoringNotePage extends AppComponent {
   template() {
     return `
-      <header class="border-bottom bg-white">
-        <nav class="navbar navbar-expand-sm container py-3 position-relative">
 
-          <div class="position-absolute start-50 translate-middle-x d-sm-none">
-            <brand-component></brand-component>
-          </div>
+    <header-component></header-component>
 
-          <div class="d-none d-sm-block me-sm-5">
-            <brand-component></brand-component>
-          </div>
+    <div class="conteneur-principal">
+      
+      <div class="bloc-entete">
+        <h1><strong>Create monitoring note</strong></h1>
+      </div>
 
-          <button
-            class="navbar-toggler ms-auto"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#planetPulseNav"
-            aria-controls="planetPulseNav"
-            aria-expanded="false"
-            aria-label="Ouvrir la navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
+      <form class="bloc-form">
+        
+        <div class="ligne-form">
+          <label for="title">Title</label>
+          <input type="text" class="champ-texte" id="title" placeholder="Enter the title of the monitoring note">
+        </div>
 
-          <div class="collapse navbar-collapse" id="planetPulseNav">
-            <div class="navbar-nav ms-sm-auto gap-lg-2">
-              <a class="nav-link" href="/countries/">Countries</a>
-              <a class="nav-link" href="/indicators/">Indicators</a>
-              <a class="nav-link" href="/import-data/">Import data</a>
-            </div>
-          </div>
+        <div class="ligne-form">
+          <label for="date">Date</label>
+          <input type="text" class="champ-texte" id="date" placeholder="YYYY/MM/DD">
+        </div>
 
-        </nav>
-      </header>
+        <div class="ligne-form">
+          <label for="content">Content</label>
+          <textarea class="champ-texte zone-texte" id="content" rows="6" placeholder="Enter note details...."></textarea>
+        </div>
+
+        <div class="conteneur-boutons">
+          <button type="submit" class="bouton-save">Save</button>
+          <button type="button" class="bouton-cancel">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+      
     `;
     }
-    
-  afterRender() {
-    this.#highlightCurrentLink();
-  }
-
-  #highlightCurrentLink() {
-    this.querySelectorAll(".nav-link").forEach((link) => {
-      if (link.getAttribute("href") === location.pathname) {
-        link.classList.add("active");
-        link.setAttribute("aria-current", "page");
-      }
-    });
-  }
 
 }
 
-customElements.define("header-component", HeaderComponent);
+customElements.define("monitoring-note-page", MonitoringNotePage );
