@@ -8,7 +8,7 @@ export default class IndicatorForm extends AppComponent {
     template() {
         return /*html*/`
         <form id="indicator-form" class="card card-body mb-4" novalidate>
-            <div class="row row-cols-1 row-cols-sm-5 g-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-5 g-3">
                 <div class="col">
                     <label for="year" class="form-label small indicator-field-label">${indicatorMessages.form.year.label}</label>
                     <input id="year" name="year" class="form-control" value="${getCurrentYear()}">
