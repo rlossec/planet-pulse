@@ -1,3 +1,4 @@
+
 import HeaderComponent from "../../base/HeaderComponent.js";
 import AppComponent from "../../base/AppComponent.js";
 
@@ -44,3 +45,4 @@ export default class MonitoringNotePage extends AppComponent {
 }
 
 customElements.define("monitoring-note-page", MonitoringNotePage );
+
