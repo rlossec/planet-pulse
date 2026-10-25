@@ -3,7 +3,9 @@ package co.simplon.planetpulse.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,5 +38,12 @@ public class AnnualIndicatorController {
     @GetMapping
     public List<AnnualIndicatorDto> getByCountry(@RequestParam String isoCode2) {
         return service.getByCountry(isoCode2);
+    }
+
+    // @PathVariable : Spring lit l'id dans l'URL (/indicators/12) ; 204 = succès sans contenu à renvoyer
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Integer id) {
+        service.delete(id);
     }
 }

@@ -6,12 +6,15 @@ const indicatorMessages = {
     list: {
         title: 'Recorded data',
         emptyValue: '—',
+        deleteLabel: 'Delete the entry for year',
+        deleteConfirm: 'Delete this entry? This action cannot be undone.',
         columns: {
             year: 'Year',
             co2: 'CO2 emissions (Mt)',
             renewableEnergy: 'Renewable energy (%)',
             forest: 'Forest area (%)',
             pm25: 'PM2.5 exposure (µg/m³)',
+            actions: 'Actions',
         },
     },
     form: {

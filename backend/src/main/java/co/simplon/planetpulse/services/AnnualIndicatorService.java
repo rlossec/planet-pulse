@@ -49,11 +49,23 @@ public class AnnualIndicatorService {
         return repository.findByIsoCode2OrderByYearDesc(isoCode2)
                 .stream()
                 .map(indicator -> new AnnualIndicatorDto(
+                        indicator.getId(),
                         indicator.getYear(),
                         indicator.getCo2Emission(),
                         indicator.getRenewableEnergyShare(),
                         indicator.getForestArea(),
                         indicator.getPm25Exposure()))
                 .toList();
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        // Without this check, deleting an unknown id would silently do nothing
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Indicator not found.");
+        }
+
+        repository.deleteById(id);
     }
 }

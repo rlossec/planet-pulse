@@ -57,7 +57,7 @@ export async function getIndicators(isoCode2) {
             `${API_BASE_URL}/indicators?isoCode2=${encodeURIComponent(isoCode2)}`
         );
     } catch {
-        throw new Error(indicatorMessages.form.apiError.network);
+        throw new Error('Unable to reach the server. Please try again later.');
     }
 
     if (!response.ok) {
@@ -65,4 +65,29 @@ export async function getIndicators(isoCode2) {
     }
 
     return response.json();
+}
+
+// Deletes one indicator entry by its id (the backend answers 204 without body)
+export async function deleteIndicator(id) {
+    let response;
+    try {
+        response = await fetch(`${API_BASE_URL}/indicators/${encodeURIComponent(id)}`, {
+            method: 'DELETE'
+        });
+    } catch {
+        throw new Error('Unable to reach the server. Please try again later.');
+    }
+
+    if (response.ok) {
+        return;
+    }
+
+    let body = null;
+    try {
+        body = await response.json();
+    } catch {
+        // the response has no JSON body
+    }
+
+    throw new Error((body && body.message) || indicatorMessages.form.apiError.unexpected);
 }
