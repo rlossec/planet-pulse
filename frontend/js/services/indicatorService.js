@@ -48,3 +48,21 @@ export async function createIndicator(data) {
     }
     throw new Error((body && body.message) || indicatorMessages.form.apiError.unexpected);
 }
+
+// Returns the indicator entries of a country, most recent year first (empty array if none)
+export async function getIndicators(isoCode2) {
+    let response;
+    try {
+        response = await fetch(
+            `${API_BASE_URL}/indicators?isoCode2=${encodeURIComponent(isoCode2)}`
+        );
+    } catch {
+        throw new Error(indicatorMessages.form.apiError.network);
+    }
+
+    if (!response.ok) {
+        throw new Error(indicatorMessages.form.apiError.unexpected);
+    }
+
+    return response.json();
+}

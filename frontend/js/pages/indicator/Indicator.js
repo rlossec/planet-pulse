@@ -1,5 +1,6 @@
 import PageComponent from '../../base/PageComponent.js';
 import '../../components/indicator-form/IndicatorForm.js';
+import '../../components/indicator-list/IndicatorList.js';
 import indicatorMessages from '../../../i18n/en/indicators.js';
 
 export default class Indicator extends PageComponent {
@@ -21,6 +22,7 @@ export default class Indicator extends PageComponent {
                     <div class="mb-4">
                         <h1 class="h3 text-center text-uppercase mb-1">${indicatorMessages.title}</h1>
                         <p class="text-center mb-3">${indicatorMessages.countryLabel} <span id="country-code"></span></p>
+                        <div id="list-container"></div>
                         <div class="row justify-content-center">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                                 <button id="toggle-form-btn" type="button" class="btn btn-primary w-100"
@@ -50,9 +52,17 @@ export default class Indicator extends PageComponent {
         // Events coming from the child component
         const container = this.querySelector('#form-container');
         container.addEventListener('indicator-cancel', () => this.#hideForm());
-        container.addEventListener('indicator-submit', (event) => {
-            console.log(event.detail); // temporary: the API call is for the next feature
-        });
+        // The entry is saved by the form: reload the list to display it
+        container.addEventListener('indicator-submit', () => this.#showList());
+
+        this.#showList();
+    }
+
+    // Replaces the list by a new one, which fetches the entries again
+    #showList() {
+        const container = this.querySelector('#list-container');
+        container.replaceChildren();
+        this.attachChild(container, 'indicator-list', { isoCode2: this.state.isoCode2 });
     }
 
     #toggleForm() {

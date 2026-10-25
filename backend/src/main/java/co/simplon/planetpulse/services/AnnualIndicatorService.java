@@ -1,11 +1,14 @@
 package co.simplon.planetpulse.services;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import co.simplon.planetpulse.dtos.AnnualIndicatorCreateDto;
+import co.simplon.planetpulse.dtos.AnnualIndicatorDto;
 import co.simplon.planetpulse.entities.AnnualIndicator;
 import co.simplon.planetpulse.repositories.AnnualIndicatorRepository;
 
@@ -38,5 +41,19 @@ public class AnnualIndicatorService {
                 dto.getRenewableEnergy(), dto.getForest(), pm25);
 
         repository.save(indicator);
+    }
+
+    // readOnly = true : on ne fait que lire, la transaction n'a pas besoin d'écrire en base
+    @Transactional(readOnly = true)
+    public List<AnnualIndicatorDto> getByCountry(String isoCode2) {
+        return repository.findByIsoCode2OrderByYearDesc(isoCode2)
+                .stream()
+                .map(indicator -> new AnnualIndicatorDto(
+                        indicator.getYear(),
+                        indicator.getCo2Emission(),
+                        indicator.getRenewableEnergyShare(),
+                        indicator.getForestArea(),
+                        indicator.getPm25Exposure()))
+                .toList();
     }
 }

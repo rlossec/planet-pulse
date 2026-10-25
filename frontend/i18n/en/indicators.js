@@ -3,6 +3,17 @@ const indicatorMessages = {
     missingCountryCode: 'Missing country code in the URL (example: ?iso_code_2=FR).',
     countryLabel: 'Country:',
     addData: 'Add data',
+    list: {
+        title: 'Recorded data',
+        emptyValue: '—',
+        columns: {
+            year: 'Year',
+            co2: 'CO2 emissions (Mt)',
+            renewableEnergy: 'Renewable energy (%)',
+            forest: 'Forest area (%)',
+            pm25: 'PM2.5 exposure (µg/m³)',
+        },
+    },
     form: {
         year: {
             label: 'Year',
