@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.simplon.planetpulse.dtos.AnnualIndicatorCreateDto;
 import co.simplon.planetpulse.dtos.AnnualIndicatorDto;
+import co.simplon.planetpulse.dtos.AnnualIndicatorUpdateDto;
 import co.simplon.planetpulse.services.AnnualIndicatorService;
 import jakarta.validation.Valid;
 
@@ -38,6 +40,13 @@ public class AnnualIndicatorController {
     @GetMapping
     public List<AnnualIndicatorDto> getByCountry(@RequestParam String isoCode2) {
         return service.getByCountry(isoCode2);
+    }
+
+    // @PathVariable : l'id vient de l'URL ; @Valid : Spring applique les règles du DTO avant d'entrer dans la méthode
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable Integer id, @Valid @RequestBody AnnualIndicatorUpdateDto dto) {
+        service.update(id, dto);
     }
 
     // @PathVariable : Spring lit l'id dans l'URL (/indicators/12) ; 204 = succès sans contenu à renvoyer

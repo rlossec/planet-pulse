@@ -54,6 +54,15 @@ public class AnnualIndicator {
         this.pm25Exposure = pm25Exposure;
     }
 
+    // Remplace les 4 indicateurs ; le pays et l'année ne changent jamais
+    public void updateValues(Integer co2Emission, BigDecimal renewableEnergyShare,
+            BigDecimal forestArea, Short pm25Exposure) {
+        this.co2Emission = co2Emission;
+        this.renewableEnergyShare = renewableEnergyShare;
+        this.forestArea = forestArea;
+        this.pm25Exposure = pm25Exposure;
+    }
+
     public Integer getId() {
         return id;
     }

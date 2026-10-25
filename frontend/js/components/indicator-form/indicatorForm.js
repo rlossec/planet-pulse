@@ -2,39 +2,45 @@ import AppComponent from '../../base/AppComponent.js';
 import indicatorValidation from './IndicatorFormValidation.js';
 import { getCurrentYear } from '../../utils/inputFormValidation.js';
 import indicatorMessages from '../../../i18n/en/indicators.js';
-import { createIndicator } from '../../services/indicatorService.js';
+import { createIndicator, updateIndicator } from '../../services/indicatorService.js';
 
 export default class IndicatorForm extends AppComponent {
 
     template() {
+        // Edit mode when the parent gives an existing entry, create mode otherwise
+        const indicator = this.props.indicator;
+
         return /*html*/`
         <form id="indicator-form" class="card card-body mb-4" novalidate>
+            ${indicator ? `<h2 class="h6 text-center mb-3">${indicatorMessages.form.editTitle} ${indicator.year}</h2>` : ''}
             <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-5 g-3">
                 <div class="col">
                     <label for="year" class="form-label small indicator-field-label">${indicatorMessages.form.year.label}</label>
-                    <input id="year" name="year" class="form-control" value="${getCurrentYear()}">
-                    <small class="form-text">${indicatorMessages.form.year.description}</small>
+                    <input id="year" name="year" class="form-control" value="${indicator ? indicator.year : getCurrentYear()}" ${indicator ? 'readonly' : ''}>
+                    <small class="form-text">${indicator ? indicatorMessages.form.year.readonlyDescription : indicatorMessages.form.year.description}</small>
                 </div>
                 <div class="col">
                     <label for="co2" class="form-label small indicator-field-label">${indicatorMessages.form.co2.label}</label>
-                    <input id="co2" name="co2" class="form-control" placeholder="${indicatorMessages.form.co2.placeholder}">
+                    <input id="co2" name="co2" class="form-control" placeholder="${indicatorMessages.form.co2.placeholder}"
+                        value="${this.#fieldValue(indicator?.co2)}">
                     <small class="form-text">${indicatorMessages.form.co2.description}</small>
                 </div>
                 <div class="col">
                     <label for="renewable-energy" class="form-label small indicator-field-label">${indicatorMessages.form.renewableEnergy.label}</label>
                     <input id="renewable-energy" name="renewableEnergy" class="form-control" placeholder="${indicatorMessages.form.renewableEnergy.placeholder}"
-                        step="any">
+                        step="any" value="${this.#fieldValue(indicator?.renewableEnergy)}">
                     <small class="form-text">${indicatorMessages.form.renewableEnergy.description}</small>
                 </div>
                 <div class="col">
                     <label for="forest" class="form-label small indicator-field-label">${indicatorMessages.form.forest.label}</label>
                     <input id="forest" name="forest" class="form-control" placeholder="${indicatorMessages.form.forest.placeholder}"
-                        step="any">
+                        step="any" value="${this.#fieldValue(indicator?.forest)}">
                     <small class="form-text">${indicatorMessages.form.forest.description}</small>
                 </div>
                 <div class="col">
                     <label for="pm25" class="form-label small indicator-field-label">${indicatorMessages.form.pm25.label}</label>
-                    <input id="pm25" name="pm25" class="form-control" placeholder="${indicatorMessages.form.pm25.placeholder}">
+                    <input id="pm25" name="pm25" class="form-control" placeholder="${indicatorMessages.form.pm25.placeholder}"
+                        value="${this.#fieldValue(indicator?.pm25)}">
                     <small class="form-text">${indicatorMessages.form.pm25.description}</small>
                 </div>
             </div>
@@ -57,6 +63,14 @@ export default class IndicatorForm extends AppComponent {
             .addEventListener('click', () => this.#handleCancel());
     }
 
+    // A null value is displayed as an empty field
+    #fieldValue(value) {
+        if (value === null || value === undefined) {
+            return '';
+        }
+        return value;
+    }
+
     #handleSubmit(event) {
         event.preventDefault();
         const submitter = event.submitter
@@ -76,11 +90,21 @@ export default class IndicatorForm extends AppComponent {
             submitter.disabled = true;
         }
 
-        // Call the service to create the indicator and handle the response
-        createIndicator(data)
+        // Update the existing entry in edit mode, create a new one otherwise
+        const isEditMode = Boolean(this.props.indicator);
+        const request = isEditMode
+            ? updateIndicator(this.props.indicator.id, data)
+            : createIndicator(data);
+
+        request
             .then(() => {
-                this.#showSuccess();
-                this.dispatchEvent(new CustomEvent('indicator-submit', { detail: data, bubbles: true }));
+                if (isEditMode) {
+                    // The page closes the form, shows the confirmation and reloads the list
+                    this.dispatchEvent(new CustomEvent('indicator-update', { detail: data, bubbles: true }));
+                } else {
+                    this.#showSuccess();
+                    this.dispatchEvent(new CustomEvent('indicator-submit', { detail: data, bubbles: true }));
+                }
             })
             .catch((error) => {
                 this.#showError(error.message);

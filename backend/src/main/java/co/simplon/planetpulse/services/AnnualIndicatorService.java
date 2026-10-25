@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import co.simplon.planetpulse.dtos.AnnualIndicatorCreateDto;
 import co.simplon.planetpulse.dtos.AnnualIndicatorDto;
+import co.simplon.planetpulse.dtos.AnnualIndicatorUpdateDto;
 import co.simplon.planetpulse.entities.AnnualIndicator;
 import co.simplon.planetpulse.repositories.AnnualIndicatorRepository;
 
@@ -56,6 +57,22 @@ public class AnnualIndicatorService {
                         indicator.getForestArea(),
                         indicator.getPm25Exposure()))
                 .toList();
+    }
+
+    @Transactional
+    public void update(Integer id, AnnualIndicatorUpdateDto dto) {
+        AnnualIndicator indicator = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Indicator not found."));
+
+        // Convert Integer to Short for pm25 from the DTO, since the entity expects a Short value
+        Short pm25 = null;
+        if (dto.getPm25() != null) {
+            pm25 = dto.getPm25().shortValue();
+        }
+
+        // No save() needed: the entity is managed, Hibernate sends the UPDATE at the end of the transaction
+        indicator.updateValues(dto.getCo2(), dto.getRenewableEnergy(), dto.getForest(), pm25);
     }
 
     @Transactional

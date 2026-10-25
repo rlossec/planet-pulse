@@ -74,13 +74,34 @@ export default class IndicatorList extends AppComponent {
         });
 
         const actionCell = document.createElement('td');
+        actionCell.appendChild(this.#createEditButton(indicator));
         actionCell.appendChild(this.#createDeleteButton(indicator));
         row.appendChild(actionCell);
 
         return row;
     }
 
-            #createDeleteButton(indicator) {
+    #createEditButton(indicator) {
+        const label = `${indicatorMessages.list.editLabel} ${indicator.year}`;
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        // Plain blue pencil made of a text character: no icon font needed
+        button.className = 'border-0 bg-transparent text-primary p-0 lh-1 fs-5 me-3';
+        button.title = label;
+        // The pencil is decorative: the text for screen readers is in the visually-hidden span
+        button.innerHTML = '<span aria-hidden="true">&#9998;</span><span class="visually-hidden"></span>';
+        button.querySelector('.visually-hidden').textContent = label;
+
+        // The page decides what to do: it opens the form for this entry
+        button.addEventListener('click', () => {
+            this.dispatchEvent(new CustomEvent('indicator-edit', { detail: indicator, bubbles: true }));
+        });
+
+        return button;
+    }
+
+    #createDeleteButton(indicator) {
         const label = `${indicatorMessages.list.deleteLabel} ${indicator.year}`;
 
         const button = document.createElement('button');

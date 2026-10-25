@@ -3,9 +3,11 @@ const indicatorMessages = {
     missingCountryCode: 'Missing country code in the URL (example: ?iso_code_2=FR).',
     countryLabel: 'Country:',
     addData: 'Add data',
+    updateSuccess: 'Indicator updated successfully.',
     list: {
         title: 'Recorded data',
         emptyValue: '—',
+        editLabel: 'Edit the entry for year',
         deleteLabel: 'Delete the entry for year',
         deleteConfirm: 'Delete this entry? This action cannot be undone.',
         columns: {
@@ -18,9 +20,11 @@ const indicatorMessages = {
         },
     },
     form: {
+        editTitle: 'Edit the entry for year',
         year: {
             label: 'Year',
             description: 'Calendar year',
+            readonlyDescription: 'The year cannot be changed',
         },
         co2: {
             label: 'CO2 emissions',
