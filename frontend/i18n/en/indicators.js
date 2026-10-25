@@ -30,6 +30,7 @@ const indicatorMessages = {
         },
         save: 'Save',
         cancel: 'Cancel',
+        success: 'Indicator created successfully.',
         apiError: {
             network: 'Unable to reach the server. Please try again later.',
             unexpected: 'Unexpected server error. Please try again later.',
