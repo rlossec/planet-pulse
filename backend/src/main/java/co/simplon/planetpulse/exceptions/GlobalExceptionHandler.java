@@ -16,13 +16,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
-//@RestontrollerAdvice une classe qui s’applique à tous les Controllers. Quand une exception remonte, Spring cherche ici une méthode qui sait la traiter, avant de répondre par défaut.
+//@RestontrollerAdvice une classe qui s’applique à tous les Controllers.
+//Quand une exception remonte, Spring cherche ici une méthode qui sait la traiter, avant de répondre par défaut.
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    //@ExceptionHandler indique à Spring que cette méthode sait gérer une exception particulière. Quand une exception de ce type remonte, Spring appelle cette méthode pour construire la réponse HTTP.
+    //@ExceptionHandler indique à Spring que cette méthode sait gérer une exception particulière. 
+    //Quand une exception de ce type remonte, Spring appelle cette méthode pour construire la réponse HTTP.
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new LinkedHashMap<>();

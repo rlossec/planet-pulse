@@ -2,6 +2,7 @@ import AppComponent from '../../base/AppComponent.js';
 import indicatorValidation from './IndicatorFormValidation.js';
 import { getCurrentYear } from '../../utils/inputFormValidation.js';
 import indicatorMessages from '../../../i18n/en/indicators.js';
+import { createIndicator } from '../../services/indicatorService.js';
 
 export default class IndicatorForm extends AppComponent {
 
@@ -55,21 +56,47 @@ export default class IndicatorForm extends AppComponent {
 
     #handleSubmit(event) {
         event.preventDefault();
+        const submitter = event.submitter
         const data = Object.fromEntries(new FormData(event.target));
-        const validationError = this.querySelector('#validation-error');
+
         const errorMessage = indicatorValidation(data)
         if (errorMessage) {
-            validationError.textContent = errorMessage;
-            validationError.classList.remove('d-none');
+            this.#showError(errorMessage);
             return;
         }
 
-        data.isoCode2 = this.props.isoCode2; // add the country code to the data object
+        data.isoCode2 = this.props.isoCode2;
 
-        validationError.classList.add('d-none');
+        this.#hideError();
+        if (submitter) {
+            submitter.disabled = true;
+        }
+
+        // Call the service to create the indicator and handle the response
+        createIndicator(data)
+            .then(() => {
+                this.dispatchEvent(new CustomEvent('indicator-submit', { detail: data, bubbles: true }));
+            })
+            .catch((error) => {
+                this.#showError(error.message);
+            })
+            .finally(() => {
+                if (submitter) {
+                    submitter.disabled = false;
+                }
+            });
+    }
+
+    #showError(message) {
+        const validationError = this.querySelector('#validation-error');
+        validationError.textContent = message;
+        validationError.classList.remove('d-none');
+    }
+
+    #hideError() {
+        const validationError = this.querySelector('#validation-error');
         validationError.textContent = null;
-        this.dispatchEvent(new CustomEvent('indicator-submit', { detail: data, bubbles: true }));
-        console.log(data);
+        validationError.classList.add('d-none');
     }
 
     #handleCancel() {

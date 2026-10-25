@@ -6,6 +6,7 @@ set -euo pipefail
 
 dir="$(dirname "$0")"
 
-bash "$dir/04_drop.sh"
-bash "$dir/02_create.sh"
-bash "$dir/03_insert.sh"
+bash "$dir/05_drop.sh"
+bash "$dir/03_create.sh"
+bash "$dir/04_insert.sh"
+bash "$dir/02_check_tables.sh"

@@ -7,5 +7,5 @@ set -euo pipefail
 dir="$(dirname "$0")"
 
 bash "$dir/00_init.sh"
-bash "$dir/01_check.sh"
-bash "$dir/02_create.sh"
+bash "$dir/01_check_connection.sh"
+bash "$dir/03_create.sh"

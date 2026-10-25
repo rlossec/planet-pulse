@@ -15,10 +15,11 @@ database/
 ├── scripts/
 │   ├── _common.sh              # Connection and SQL execution
 │   ├── 00_init.sh
-│   ├── 01_check.sh
-│   ├── 02_create.sh
-│   ├── 03_insert.sh
-│   ├── 04_drop.sh
+│   ├── 01_check_connection.sh
+|   ├── 02_check_tables.sh
+│   ├── 03_create.sh
+│   ├── 04_insert.sh
+│   ├── 05_drop.sh
 │   ├── build.sh                # init, check, create
 │   ├── build_with_data.sh      # init, check, create, insert
 │   └── rebuild.sh              # drop, create, insert
@@ -41,7 +42,8 @@ database/
     │           ├── ddl_drop_tables.sql
     │           └── ddl_truncate_tables.sql
     └── checks/
-        └── dql_check_connection.sql
+        ├── dql_check_connection.sql
+        └── dql_check_table_data.sql
 ```
 
 SQL paths in the runners are relative to `sql/` (for example `features/01_countries/01_ddl_create_tables.sql`).
@@ -88,6 +90,7 @@ bash database/scripts/build_with_data.sh
 | `02_create.sh`    | `ddl_create_tables.sql` of each feature                        |
 | `03_insert.sh`    | `dml` scripts, into empty tables                               |
 | `04_drop.sh`      | `reset/ddl_drop_tables.sql` of each feature, in reverse order  |
+| `check_tables.sh` | Lists user tables and checks whether each contains rows         |
 | `build`           | `init`, then `check`, then `create`                            |
 | `build_with_data` | `build`, then `insert`                                         |
 | `rebuild`         | `drop`, then `create`, then `insert`                           |
@@ -103,6 +106,17 @@ POSTGRES_DB=planet_pulse bash database/scripts/02_create.sh
 
 ```bash
 bash database/scripts/01_check.sh
+```
+
+### Check Table Contents
+
+`check_tables.sh` lists tables outside PostgreSQL's system schemas in the
+configured database and reports `YES` or `NO` in the `has_data` column.
+It checks only whether at least one row exists; it does not count or display
+table contents. It is read-only and can be run independently:
+
+```bash
+bash database/scripts/check_tables.sh
 ```
 
 ## 6. Adding a Feature
@@ -121,6 +135,7 @@ The scripts in the `sql/checks/` directory are used to:
 
 - Verify database connectivity.
 - Check that the expected tables exist.
+- Check whether each user table contains at least one row.
 - Detect missing data or potential duplicates.
 
 Validation scripts must not modify the database schema or its data.

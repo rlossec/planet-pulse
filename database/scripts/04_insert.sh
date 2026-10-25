@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Inserts data.
-# Usage: database/scripts/03_insert.sh
+# Usage: database/scripts/05_insert.sh
 
 source "$(dirname "$0")/_common.sh"
 

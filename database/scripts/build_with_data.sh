@@ -7,4 +7,5 @@ set -euo pipefail
 dir="$(dirname "$0")"
 
 bash "$dir/build.sh"
-bash "$dir/03_insert.sh"
+bash "$dir/04_insert.sh"
+bash "$dir/02_check_tables.sh"
