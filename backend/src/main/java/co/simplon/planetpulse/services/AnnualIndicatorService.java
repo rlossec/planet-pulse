@@ -25,21 +25,21 @@ public class AnnualIndicatorService {
 
     @Transactional
     public void create(AnnualIndicatorCreateDto dto) {
-        Short year = dto.getYear().shortValue();
+        Short year = dto.year().shortValue();
 
-        if (repository.existsByIsoCode2AndYear(dto.getIsoCode2(), year)) {
+        if (repository.existsByIsoCode2AndYear(dto.isoCode2(), year)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Indicators already exist for this country and year.");
         }
 
         // Convert Integer to Short for pm25 from the DTO, since the entity expects a Short value
         Short pm25 = null;
-        if (dto.getPm25() != null) {
-            pm25 = dto.getPm25().shortValue();
+        if (dto.pm25() != null) {
+            pm25 = dto.pm25().shortValue();
         }
 
-        AnnualIndicator indicator = new AnnualIndicator(dto.getIsoCode2(), year, dto.getCo2(),
-                dto.getRenewableEnergy(), dto.getForest(), pm25);
+        AnnualIndicator indicator = new AnnualIndicator(dto.isoCode2(), year, dto.co2(),
+                dto.renewableEnergy(), dto.forest(), pm25);
 
         repository.save(indicator);
     }
@@ -67,12 +67,15 @@ public class AnnualIndicatorService {
 
         // Convert Integer to Short for pm25 from the DTO, since the entity expects a Short value
         Short pm25 = null;
-        if (dto.getPm25() != null) {
-            pm25 = dto.getPm25().shortValue();
+        if (dto.pm25() != null) {
+            pm25 = dto.pm25().shortValue();
         }
 
-        // No save() needed: the entity is managed, Hibernate sends the UPDATE at the end of the transaction
-        indicator.updateValues(dto.getCo2(), dto.getRenewableEnergy(), dto.getForest(), pm25);
+        // The entity is managed, so Hibernate sends the UPDATE at the end of the transaction.
+        indicator.setCo2Emission(dto.co2());
+        indicator.setRenewableEnergyShare(dto.renewableEnergy());
+        indicator.setForestArea(dto.forest());
+        indicator.setPm25Exposure(pm25);
     }
 
     @Transactional
