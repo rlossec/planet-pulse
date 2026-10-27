@@ -54,15 +54,6 @@ public class AnnualIndicator {
         this.pm25Exposure = pm25Exposure;
     }
 
-    // Remplace les 4 indicateurs ; le pays et l'année ne changent jamais
-    public void updateValues(Integer co2Emission, BigDecimal renewableEnergyShare,
-            BigDecimal forestArea, Short pm25Exposure) {
-        this.co2Emission = co2Emission;
-        this.renewableEnergyShare = renewableEnergyShare;
-        this.forestArea = forestArea;
-        this.pm25Exposure = pm25Exposure;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -79,15 +70,31 @@ public class AnnualIndicator {
         return co2Emission;
     }
 
+    public void setCo2Emission(Integer co2Emission) {
+        this.co2Emission = co2Emission;
+    }
+
     public BigDecimal getRenewableEnergyShare() {
         return renewableEnergyShare;
+    }
+
+    public void setRenewableEnergyShare(BigDecimal renewableEnergyShare) {
+        this.renewableEnergyShare = renewableEnergyShare;
     }
 
     public BigDecimal getForestArea() {
         return forestArea;
     }
 
+    public void setForestArea(BigDecimal forestArea) {
+        this.forestArea = forestArea;
+    }
+
     public Short getPm25Exposure() {
         return pm25Exposure;
+    }
+
+    public void setPm25Exposure(Short pm25Exposure) {
+        this.pm25Exposure = pm25Exposure;
     }
 }
