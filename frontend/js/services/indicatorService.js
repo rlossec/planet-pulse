@@ -31,6 +31,25 @@ function toUpdatePayload(data) {
     };
 }
 
+async function throwApiError(response) {
+    let body = null;
+    try {
+        body = await response.json();
+    } catch {
+        // The response body may be empty or not contain JSON.
+    }
+
+    const apiErrors = indicatorMessages.apiErrors;
+    const fieldErrors = body?.errors && Object.values(body.errors)
+        .map((code) => apiErrors[code] || apiErrors.UNEXPECTED_ERROR);
+
+    if (fieldErrors?.length) {
+        throw new Error([...new Set(fieldErrors)].join(' '));
+    }
+
+    throw new Error(apiErrors[body?.code] || apiErrors.UNEXPECTED_ERROR);
+}
+
 export async function createIndicator(data) {
     let response;
     try {
@@ -40,24 +59,14 @@ export async function createIndicator(data) {
             body: JSON.stringify(toPayload(data))
         });
     } catch {
-        throw new Error('Unable to reach the server. Please try again later.');
+        throw new Error(indicatorMessages.form.apiError.network);
     }
 
     if (response.ok) {
         return;
     }
 
-    let body = null;
-    try {
-        body = await response.json();
-    } catch {
-        // the response has no JSON body
-    }
-
-    if (body && body.errors) {
-        throw new Error(Object.values(body.errors).join(' '));
-    }
-    throw new Error((body && body.message) || indicatorMessages.form.apiError.unexpected);
+    await throwApiError(response);
 }
 
 // Returns the indicator entries of a country, most recent year first (empty array if none)
@@ -68,11 +77,11 @@ export async function getIndicators(isoCode2) {
             `${API_BASE_URL}/indicators?isoCode2=${encodeURIComponent(isoCode2)}`
         );
     } catch {
-        throw new Error('Unable to reach the server. Please try again later.');
+        throw new Error(indicatorMessages.form.apiError.network);
     }
 
     if (!response.ok) {
-        throw new Error(indicatorMessages.form.apiError.unexpected);
+        await throwApiError(response);
     }
 
     return response.json();
@@ -88,24 +97,14 @@ export async function updateIndicator(id, data) {
             body: JSON.stringify(toUpdatePayload(data))
         });
     } catch {
-        throw new Error('Unable to reach the server. Please try again later.');
+        throw new Error(indicatorMessages.form.apiError.network);
     }
 
     if (response.ok) {
         return;
     }
 
-    let body = null;
-    try {
-        body = await response.json();
-    } catch {
-        // the response has no JSON body
-    }
-
-    if (body && body.errors) {
-        throw new Error(Object.values(body.errors).join(' '));
-    }
-    throw new Error((body && body.message) || indicatorMessages.form.apiError.unexpected);
+    await throwApiError(response);
 }
 
 // Deletes one indicator entry by its id (the backend answers 204 without body)
@@ -116,19 +115,12 @@ export async function deleteIndicator(id) {
             method: 'DELETE'
         });
     } catch {
-        throw new Error('Unable to reach the server. Please try again later.');
+        throw new Error(indicatorMessages.form.apiError.network);
     }
 
     if (response.ok) {
         return;
     }
 
-    let body = null;
-    try {
-        body = await response.json();
-    } catch {
-        // the response has no JSON body
-    }
-
-    throw new Error((body && body.message) || indicatorMessages.form.apiError.unexpected);
+    await throwApiError(response);
 }

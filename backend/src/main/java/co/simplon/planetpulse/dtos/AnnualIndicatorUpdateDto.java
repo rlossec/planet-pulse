@@ -9,23 +9,23 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 
 public record AnnualIndicatorUpdateDto(
-        @Min(value = 0, message = "Minimum CO2 annual emissions is 0.")
+        @Min(value = 0, message = "CO2_MINIMUM")
         Integer co2,
 
-        @DecimalMin(value = "0", message = "Renewable energy must be between 0 and 100.")
-        @DecimalMax(value = "100", message = "Renewable energy must be between 0 and 100.")
-        @Digits(integer = 3, fraction = 1, message = "Renewable energy must have at most 1 decimal.")
+        @DecimalMin(value = "0", message = "RENEWABLE_ENERGY_RANGE")
+        @DecimalMax(value = "100", message = "RENEWABLE_ENERGY_RANGE")
+        @Digits(integer = 3, fraction = 1, message = "RENEWABLE_ENERGY_PRECISION")
         BigDecimal renewableEnergy,
 
-        @DecimalMin(value = "0", message = "Forest area value must be between 0 and 100.")
-        @DecimalMax(value = "100", message = "Forest area must be between 0 and 100.")
-        @Digits(integer = 3, fraction = 2, message = "Forest area must have at most 2 decimals.")
+        @DecimalMin(value = "0", message = "FOREST_RANGE")
+        @DecimalMax(value = "100", message = "FOREST_RANGE")
+        @Digits(integer = 3, fraction = 2, message = "FOREST_PRECISION")
         BigDecimal forest,
 
-        @Min(value = 0, message = "Minimum PM2.5 emissions is 0.")
+        @Min(value = 0, message = "PM25_MINIMUM")
         Integer pm25) {
 
-    @AssertTrue(message = "At least one indicator value must be provided.")
+    @AssertTrue(message = "INDICATOR_REQUIRED")
     public boolean isAtLeastOneIndicatorProvided() {
         return co2 != null || renewableEnergy != null || forest != null || pm25 != null;
     }

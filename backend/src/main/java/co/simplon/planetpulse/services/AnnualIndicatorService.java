@@ -29,7 +29,7 @@ public class AnnualIndicatorService {
 
         if (repository.existsByIsoCode2AndYear(dto.isoCode2(), year)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Indicators already exist for this country and year.");
+                    "INDICATOR_ALREADY_EXISTS");
         }
 
         // Convert Integer to Short for pm25 from the DTO, since the entity expects a Short value
@@ -63,7 +63,7 @@ public class AnnualIndicatorService {
     public void update(Integer id, AnnualIndicatorUpdateDto dto) {
         AnnualIndicator indicator = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Indicator not found."));
+                        "INDICATOR_NOT_FOUND"));
 
         // Convert Integer to Short for pm25 from the DTO, since the entity expects a Short value
         Short pm25 = null;
@@ -83,7 +83,7 @@ public class AnnualIndicatorService {
         // Without this check, deleting an unknown id would silently do nothing
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "Indicator not found.");
+                    "INDICATOR_NOT_FOUND");
         }
 
         repository.deleteById(id);
