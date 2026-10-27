@@ -20,7 +20,7 @@ CREATE TABLE t_subregions (
 );
 
 CREATE UNIQUE INDEX uq_subregions_region_id_subregion_name
-    ON t_subregions (LOWER(subregion_name));
+    ON t_subregions (region_id, LOWER(subregion_name));
 
 CREATE TABLE t_countries (
     country_id     INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -35,23 +35,9 @@ CREATE TABLE t_countries (
     CONSTRAINT fk_countries_subregion
         FOREIGN KEY (subregion_id)
         REFERENCES t_subregions (subregion_id)
-        ON DELETE RESTRICT,
+        ON DELETE RESTRICT
 
-    CONSTRAINT ck_countries_iso_code_2
-        CHECK (iso_code_2 ~ '^[A-Z]{2}$'),
-
-    CONSTRAINT ck_countries_area_km
-        CHECK (area_km > 0),
-
-    CONSTRAINT ck_countries_population
-        CHECK (population >= 0)
 );
-
-CREATE UNIQUE INDEX uq_countries_iso_code_2
-    ON t_countries (iso_code_2);
-
-CREATE UNIQUE INDEX uq_countries_flag_url
-    ON t_countries (flag_url);
 
 CREATE UNIQUE INDEX uq_countries_country_name_lower
     ON t_countries (LOWER(country_name));
