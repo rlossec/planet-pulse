@@ -11,23 +11,30 @@ import co.simplon.planetpulse.dtos.AnnualIndicatorCreateDto;
 import co.simplon.planetpulse.dtos.AnnualIndicatorDto;
 import co.simplon.planetpulse.dtos.AnnualIndicatorUpdateDto;
 import co.simplon.planetpulse.entities.AnnualIndicator;
+import co.simplon.planetpulse.entities.Country;
 import co.simplon.planetpulse.repositories.AnnualIndicatorRepository;
+import co.simplon.planetpulse.repositories.CountryRepository;
 
 // @Service : dit à Spring « crée un objet de cette classe au démarrage et garde-le disponible ». Un tel objet géré par Spring s’appelle un bean.
 @Service
 public class AnnualIndicatorService {
 
     private final AnnualIndicatorRepository repository;
+    private final CountryRepository countryRepository;
 
-    public AnnualIndicatorService(AnnualIndicatorRepository repository) {
+    public AnnualIndicatorService(AnnualIndicatorRepository repository, CountryRepository countryRepository) {
         this.repository = repository;
+        this.countryRepository = countryRepository;
     }
 
     @Transactional
     public void create(AnnualIndicatorCreateDto dto) {
         Short year = dto.year().shortValue();
+        Country country = countryRepository.findByIsoCode2(dto.isoCode2())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "UNKNOWN_COUNTRY_CODE"));
 
-        if (repository.existsByIsoCode2AndYear(dto.isoCode2(), year)) {
+        if (repository.existsByCountry_IsoCode2AndYear(dto.isoCode2(), year)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "INDICATOR_ALREADY_EXISTS");
         }
@@ -38,7 +45,7 @@ public class AnnualIndicatorService {
             pm25 = dto.pm25().shortValue();
         }
 
-        AnnualIndicator indicator = new AnnualIndicator(dto.isoCode2(), year, dto.co2(),
+        AnnualIndicator indicator = new AnnualIndicator(country, year, dto.co2(),
                 dto.renewableEnergy(), dto.forest(), pm25);
 
         repository.save(indicator);
@@ -47,7 +54,7 @@ public class AnnualIndicatorService {
     // readOnly = true : on ne fait que lire, la transaction n'a pas besoin d'écrire en base
     @Transactional(readOnly = true)
     public List<AnnualIndicatorDto> getByCountry(String isoCode2) {
-        return repository.findByIsoCode2OrderByYearDesc(isoCode2)
+        return repository.findByCountry_IsoCode2OrderByYearDesc(isoCode2)
                 .stream()
                 .map(indicator -> new AnnualIndicatorDto(
                         indicator.getId(),

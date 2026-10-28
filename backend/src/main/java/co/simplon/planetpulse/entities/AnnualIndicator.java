@@ -2,14 +2,14 @@ package co.simplon.planetpulse.entities;
 
 import java.math.BigDecimal;
 
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,23 +17,24 @@ import jakarta.persistence.Table;
 public class AnnualIndicator {
 
     @Id
+    @Column(name = "indicator_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JdbcTypeCode(SqlTypes.CHAR)
-    @Column(name = "iso_code_2", length = 2, nullable = false)
-    private String isoCode2;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "iso_code_2", referencedColumnName = "iso_code_2")
+    private Country country;
 
-    @Column(name = "year_", nullable = false)
+    @Column(name = "year_")
     private Short year;
 
     @Column(name = "co2_emission")
     private Integer co2Emission;
 
-    @Column(name = "renewable_energy_share", precision = 4, scale = 1)
+    @Column(name = "renewable_energy_share")
     private BigDecimal renewableEnergyShare;
 
-    @Column(name = "forest_area", precision = 5, scale = 2)
+    @Column(name = "forest_area")
     private BigDecimal forestArea;
 
     @Column(name = "pm25_exposure")
@@ -44,9 +45,9 @@ public class AnnualIndicator {
     }
 
     // Constructeur que notre code utilisera (sans l'id, généré par la base)
-    public AnnualIndicator(String isoCode2, Short year, Integer co2Emission,
+    public AnnualIndicator(Country country, Short year, Integer co2Emission,
             BigDecimal renewableEnergyShare, BigDecimal forestArea, Short pm25Exposure) {
-        this.isoCode2 = isoCode2;
+        this.country = country;
         this.year = year;
         this.co2Emission = co2Emission;
         this.renewableEnergyShare = renewableEnergyShare;
@@ -58,8 +59,8 @@ public class AnnualIndicator {
         return id;
     }
 
-    public String getIsoCode2() {
-        return isoCode2;
+    public Country getCountry() {
+        return country;
     }
 
     public Short getYear() {
