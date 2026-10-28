@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Drops tables.
-# Usage: database/scripts/04_drop.sh
+# Usage: database/scripts/05_drop.sh
 
 source "$(dirname "$0")/_common.sh"
 

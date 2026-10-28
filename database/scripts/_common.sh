@@ -30,7 +30,7 @@ POSTGRES_PORT=$(read_env POSTGRES_PORT 5432)
 POSTGRES_USER=$(read_env POSTGRES_USER postgres)
 POSTGRES_DB=$(read_env POSTGRES_DB planet_pulse)
 POSTGRES_PASSWORD=$(read_env POSTGRES_PASSWORD)
-
+echo $POSTGRES_PASSWORD
 if [ -z "$POSTGRES_PASSWORD" ]; then
     echo "ERROR: POSTGRES_PASSWORD is empty. Set it in .env at the repository root (see .env.example)."
     exit 1
