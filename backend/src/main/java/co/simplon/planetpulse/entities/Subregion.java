@@ -25,4 +25,6 @@ public class Subregion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     Region region;
+
 }
+

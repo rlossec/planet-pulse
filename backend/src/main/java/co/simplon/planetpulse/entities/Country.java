@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
 @Entity
 @Table(name = "t_countries")
 public class Country {
@@ -47,7 +48,6 @@ public class Country {
     public Country() {
         // Require for JPA
     }
-
     public Integer getId() {
         return id;
     }
@@ -59,7 +59,6 @@ public class Country {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -95,6 +94,7 @@ public class Country {
     public void setPopulation(Integer population) {
         this.population = population;
     }
+
 
     public Subregion getSubregion() {
         return subregion;
