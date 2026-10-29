@@ -1,9 +1,10 @@
 package co.simplon.planetpulse.dtos;
 
 import java.math.BigDecimal;
-import java.time.Year;
 
-import jakarta.validation.constraints.AssertTrue;
+import co.simplon.planetpulse.dtos.constraints.AtLeastOneIndicatorProvided;
+import co.simplon.planetpulse.dtos.constraints.ExistsByIsoCodeAndYear;
+import co.simplon.planetpulse.dtos.constraints.IsYearNotInFuture;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
@@ -12,13 +13,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+@AtLeastOneIndicatorProvided
+@ExistsByIsoCodeAndYear
 public record AnnualIndicatorCreateDto(
         @NotBlank(message = "COUNTRY_CODE_REQUIRED")
         @Pattern(regexp = "[A-Z]{2}", message = "COUNTRY_CODE_FORMAT")
         String isoCode2,
 
+        
         @NotNull(message = "YEAR_REQUIRED")
         @Min(value = 1850, message = "YEAR_MINIMUM")
+        @IsYearNotInFuture
         Integer year,
 
         @Min(value = 0, message = "CO2_MINIMUM")
@@ -36,14 +41,4 @@ public record AnnualIndicatorCreateDto(
 
         @Min(value = 0, message = "PM25_MINIMUM")
         Integer pm25) {
-
-    @AssertTrue(message = "INDICATOR_REQUIRED")
-    public boolean isAtLeastOneIndicatorProvided() {
-        return co2 != null || renewableEnergy != null || forest != null || pm25 != null;
-    }
-
-    @AssertTrue(message = "YEAR_IN_FUTURE")
-    public boolean isYearNotInFuture() {
-        return year == null || year <= Year.now().getValue();
-    }
 }

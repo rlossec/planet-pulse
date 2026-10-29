@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,8 +31,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorDto> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new LinkedHashMap<>();
-        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+        var bindingResult = ex.getBindingResult();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
             errors.putIfAbsent(fieldError.getField(), fieldError.getDefaultMessage());
+        }
+
+        for (ObjectError objectError : bindingResult.getGlobalErrors()) {
+            String message = objectError.getDefaultMessage();
+            if (errors.isEmpty() && "INDICATOR_ALREADY_EXISTS".equals(message)) {
+                return buildResponse(HttpStatus.CONFLICT, message);
+            }
+            errors.putIfAbsent("object", message);
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -54,10 +64,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorDto> handleDataIntegrity(DataIntegrityViolationException ex) {
         String cause = ex.getMostSpecificCause().getMessage();
 
-        if (cause != null && cause.contains("fk_annual_indicator_country")) {
+        if (cause != null && cause.contains("fk_annual_indicators_country")) {
             return buildResponse(HttpStatus.BAD_REQUEST, "UNKNOWN_COUNTRY_CODE");
         }
-        if (cause != null && cause.contains("uq_annual_indicator_country_year")) {
+        if (cause != null && cause.contains("uq_annual_indicators_country_year")) {
             return buildResponse(HttpStatus.CONFLICT, "INDICATOR_ALREADY_EXISTS");
         }
 

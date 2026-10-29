@@ -30,14 +30,11 @@ public class AnnualIndicatorService {
     @Transactional
     public void create(AnnualIndicatorCreateDto dto) {
         Short year = dto.year().shortValue();
+
         Country country = countryRepository.findByIsoCode2(dto.isoCode2())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "UNKNOWN_COUNTRY_CODE"));
 
-        if (repository.existsByCountry_IsoCode2AndYear(dto.isoCode2(), year)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "INDICATOR_ALREADY_EXISTS");
-        }
 
         // Convert Integer to Short for pm25 from the DTO, since the entity expects a Short value
         Short pm25 = null;

@@ -3,6 +3,13 @@ HELP.md
 ## Config Maven
 backend/.mvn/wrapper/maven-wrapper.jar
 
+## Eclipse
+.settings/
+.project
+backend/.classpath
+backend/.project
+backend/.settings/
+
 ### IntelliJ IDEA ###
 .idea
 backend/.idea
@@ -14,6 +21,7 @@ postman
 
 ### VS Code ###
 .vscode/
+.vscode/settings.json
 
 ## Folder Maven : compile files and tests
 target/
