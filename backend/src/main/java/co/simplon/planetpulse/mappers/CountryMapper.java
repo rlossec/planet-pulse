@@ -4,6 +4,9 @@ package co.simplon.planetpulse.mappers;
 import co.simplon.planetpulse.dtos.integration.restcountries.RestCountry;
 import co.simplon.planetpulse.entities.Country;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CountryMapper {
 
     public Country toEntity(RestCountry inputs) {
