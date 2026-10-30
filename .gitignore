@@ -25,5 +25,5 @@ target/
 data/raw/
 
 #config vscode
-.vscode
+.vscode/
 
