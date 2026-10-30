@@ -1,15 +1,16 @@
 package co.simplon.planetpulse.services;
 
 import co.simplon.planetpulse.dtos.integration.restcountries.RestCountry;
-import co.simplon.planetpulse.entities.Country;
 import co.simplon.planetpulse.mappers.CountryMapper;
 import co.simplon.planetpulse.repositories.CountryRepository;
 import co.simplon.planetpulse.repositories.RegionRepository;
 import co.simplon.planetpulse.repositories.SubregionRepository;
-import co.simplon.planetpulse.services.RestCountriesService;
+
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ImportCountriesService {
 
     private final CountryRepository countryRepository;
@@ -28,7 +29,7 @@ public class ImportCountriesService {
         this.regionRepository = regionRepository;
         this.subregionRepository = subregionRepository;
         this.service = service;
-        this.mapper = new CountryMapper();
+        this.mapper = mapper;
 
     }
 
