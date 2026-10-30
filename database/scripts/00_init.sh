@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Creates the PlanetPulse database if it does not exist yet.
-# Usage: bash database/scripts/00_init.sh
+# Usage: database/scripts/00_init.sh
 
 source "$(dirname "$0")/_common.sh"
 

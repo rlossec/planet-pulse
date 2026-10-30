@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Checks that the database connection is valid.
-# Usage: database/scripts/01_check.sh
+# Usage: database/scripts/01_check_connection.sh
 
 source "$(dirname "$0")/_common.sh"
 

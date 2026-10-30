@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Creates tables.
-# Usage: database/scripts/03_create.sh
+# Usage: database/scripts/02_create.sh
 
 source "$(dirname "$0")/_common.sh"
 

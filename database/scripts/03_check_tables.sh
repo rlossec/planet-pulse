@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Lists user tables and checks whether each table contains at least one row.
 # This script only reads database metadata and table contents.
-# Usage: bash database/scripts/02_check_tables.sh
+# Usage: database/scripts/03_check_tables.sh
 
 source "$(dirname "$0")/_common.sh"
 

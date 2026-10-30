@@ -16,13 +16,17 @@ database/
 │   ├── _common.sh              # Connection and SQL execution
 │   ├── 00_init.sh
 │   ├── 01_check_connection.sh
-|   ├── 02_check_tables.sh
-│   ├── 03_create.sh
+│   ├── 02_create.sh
+│   ├── 03_check_tables.sh
 │   ├── 04_insert.sh
-│   ├── 05_drop.sh
-│   ├── build.sh                # init, check, create
-│   ├── build_with_data.sh      # init, check, create, insert
-│   └── rebuild.sh              # drop, create, insert
+│   ├── drop_database.sh
+│   ├── drop_tables.sh
+│   ├── test.sh
+│   └── scenarios/
+│       ├── 01_full_restart.sh
+│       ├── 02_data_restart.sh
+│       ├── 03_tables_restart.sh
+│       └── README.md
 └── sql/
     ├── setup/
     │   └── 00_create_database.sql
@@ -35,18 +39,20 @@ database/
     │   │   └── reset/
     │   │       ├── ddl_drop_tables.sql
     │   │       └── ddl_truncate_tables.sql
-    │   └── 02_indicators/
-    │       ├── 01_ddl_create_tables.sql
-    │       ├── 02_dml_insert_annual_indicators.sql
-    │       └── reset/
-    │           ├── ddl_drop_tables.sql
-    │           └── ddl_truncate_tables.sql
+    │   ├── 02_indicators/
+    │   │   ├── 01_ddl_create_tables.sql
+    │   │   ├── 02_dml_insert_annual_indicators.sql
+    │   │   └── reset/
+    │   │       └── ddl_drop_tables.sql
+    │   └── 03_monitoring-notes/
+    │       └── 01_ddl_create_tables.sql
     └── checks/
         ├── dql_check_connection.sql
         └── dql_check_table_data.sql
 ```
 
 SQL paths in the runners are relative to `sql/` (for example `features/01_countries/01_ddl_create_tables.sql`).
+Only SQL files explicitly listed in a runner are executed. For example, the monitoring-notes feature is not currently included in `02_create.sh`.
 
 ## 3. Naming Conventions
 
@@ -71,71 +77,69 @@ Scripts do not contain `BEGIN` / `COMMIT`. The scripts in `scripts/` execute eac
 
 ## 5. Running Scripts
 
-The examples assume that PostgreSQL is installed, `psql` is in the `PATH`, and the commands run in Bash. On Windows, use a Git Bash terminal: from PowerShell, `bash` may start WSL, which cannot see the Windows `psql` (see `runners.md`). The scripts in `scripts/` read the connection only from the `.env` file at the repository root (copy `.env.example`): `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`. Terminal variables are ignored. `POSTGRES_PASSWORD` is required: if `.env` is missing or the password is empty, the scripts print what to fill in and stop.
+The examples assume that PostgreSQL is installed, `psql` is in the `PATH`, and the commands run in Bash. On Windows, use Git Bash so the scripts can access the Windows installation of `psql`.
 
-### Build the Database
+The scripts read connection settings only from the `.env` file at the repository root. Copy `.env.example` to `.env` and set `POSTGRES_PASSWORD`. `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_USER` and `POSTGRES_DB` default to `localhost`, `5432`, `postgres` and `planet_pulse`, respectively. Terminal environment variables are ignored. If `.env` is missing or `POSTGRES_PASSWORD` is empty, the scripts stop and print an error.
 
-`build_with_data` creates the database if it does not exist, then the tables, then inserts the data. It never drops anything, and fails if the tables already exist. `build` does the same without inserting data.
-
-```bash
-bash database/scripts/build_with_data.sh
-```
+The scenarios operate on the database configured in `.env`. The full restart drops that database, and the other scenarios drop and recreate its tables. Do not run them against a database containing data you need. See [`scripts/scenarios/README.md`](scripts/scenarios/README.md) for scenario details and ordering.
 
 ### Run the Steps
 
-| Script            | Scripts executed                                               |
-| ----------------- | -------------------------------------------------------------- |
-| `00_init.sh`      | `setup/00_create_database.sql`, skipped if the database exists |
-| `01_check.sh`     | `checks/dql_check_connection.sql`                              |
-| `02_create.sh`    | `ddl_create_tables.sql` of each feature                        |
-| `03_insert.sh`    | `dml` scripts, into empty tables                               |
-| `04_drop.sh`      | `reset/ddl_drop_tables.sql` of each feature, in reverse order  |
-| `check_tables.sh` | Lists user tables and checks whether each contains rows         |
-| `build`           | `init`, then `check`, then `create`                            |
-| `build_with_data` | `build`, then `insert`                                         |
-| `rebuild`         | `drop`, then `create`, then `insert`                           |
+| Script                   | Description                                                                |
+| ------------------------ | -------------------------------------------------------------------------- |
+| `00_init.sh`             | Creates the configured database if it does not exist; otherwise skips it  |
+| `01_check_connection.sh` | Runs `checks/dql_check_connection.sql`                                      |
+| `02_create.sh`           | Creates listed feature tables, in dependency order                         |
+| `03_check_tables.sh`     | Reports whether each user table has data                                   |
+| `04_insert.sh`           | Runs listed data scripts, in dependency order                              |
+| `drop_tables.sh`         | Drops listed feature tables in reverse creation order                      |
+| `drop_database.sh`       | Drops the configured database (destructive)                                |
+| `test.sh`                | Runs every `scenarios/*.sh` script in filename order                        |
 
 ```bash
-bash database/scripts/rebuild.sh
-POSTGRES_DB=planet_pulse bash database/scripts/02_create.sh
+bash database/scripts/test.sh
+```
+
+For a normal build, run the steps in order:
+
+```bash
+bash database/scripts/00_init.sh
+bash database/scripts/01_check_connection.sh
+bash database/scripts/02_create.sh
+bash database/scripts/04_insert.sh
+bash database/scripts/03_check_tables.sh
 ```
 
 ### Check the Connection
 
-`check` runs `checks/dql_check_connection.sql` with the same connection as the other scripts, and fails if the database cannot be reached:
+`01_check_connection.sh` runs `checks/dql_check_connection.sql` and fails if the configured database cannot be reached:
 
 ```bash
-bash database/scripts/01_check.sh
+bash database/scripts/01_check_connection.sh
 ```
 
 ### Check Table Contents
 
-`check_tables.sh` lists tables outside PostgreSQL's system schemas in the
-configured database and reports `YES` or `NO` in the `has_data` column.
-It checks only whether at least one row exists; it does not count or display
-table contents. It is read-only and can be run independently:
+`03_check_tables.sh` lists tables outside PostgreSQL's system schemas in the configured database and reports `YES` or `NO` in the `has_data` column. It checks only whether at least one row exists; it does not count or display table contents. It is read-only and can be run independently:
 
 ```bash
-bash database/scripts/check_tables.sh
+bash database/scripts/03_check_tables.sh
 ```
 
 ## 6. Adding a Feature
 
 1. Create `sql/features/<NN>_<feature>/` with the next free number.
 2. Add `01_ddl_create_tables.sql`, then the `dml` scripts in dependency order.
-3. Add `reset/ddl_drop_tables.sql` and `reset/ddl_truncate_tables.sql`.
+3. Add `reset/ddl_drop_tables.sql`; add `reset/ddl_truncate_tables.sql` if needed.
+4. Add each applicable SQL script path to the arrays in `02_create.sh`, `04_insert.sh` and `drop_tables.sh`. Keep creation and insertion order aligned with feature dependencies, and drop dependent tables first.
 
-4. Add each script path to the lists of `02_create.sh`, `03_insert.sh` and `04_drop.sh` (see `runners.md`).
-
-The scripts in `scripts/` only execute the SQL files listed in them.
+The scripts in `scripts/` only execute the SQL files listed in them. There is currently no runner for `ddl_truncate_tables.sql`.
 
 ## 7. Available Checks
 
 The scripts in the `sql/checks/` directory are used to:
 
 - Verify database connectivity.
-- Check that the expected tables exist.
 - Check whether each user table contains at least one row.
-- Detect missing data or potential duplicates.
 
 Validation scripts must not modify the database schema or its data.

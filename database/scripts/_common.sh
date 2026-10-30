@@ -1,4 +1,4 @@
-# Sourced by the step scripts (00_init.sh to 04_drop.sh), which live in the same folder.
+# Sourced by the database scripts.
 #
 # Connection: 
 # - read only from the .env file at the repository root.
@@ -6,8 +6,7 @@
 
 set -e
 
-# Directories variables are relative to the scripts folder.
-scripts_dir=$(dirname "$0")
+scripts_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 sql_dir="$scripts_dir/../sql"
 env_file="$scripts_dir/../../.env"
 
