@@ -9,4 +9,4 @@ import co.simplon.planetpulse.entities.Country;
 public interface CountryRepository extends JpaRepository<Country, Integer> {
 
     Optional<Country> findByIsoCode2(String isoCode2);
-}
+

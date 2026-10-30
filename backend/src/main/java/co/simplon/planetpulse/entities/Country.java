@@ -32,6 +32,7 @@ public class Country {
     @Column(name = "iso_code_2", length = 2, nullable = false)
     private String isoCode2;
 
+
     @Column(name = "flag_url", nullable = false)
     private String flag;
 
@@ -48,6 +49,7 @@ public class Country {
     public Country() {
         // Require for JPA
     }
+
     public Integer getId() {
         return id;
     }
@@ -94,7 +96,6 @@ public class Country {
     public void setPopulation(Integer population) {
         this.population = population;
     }
-
 
     public Subregion getSubregion() {
         return subregion;
