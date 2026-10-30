@@ -4,9 +4,16 @@ HELP.md
 backend/.mvn/wrapper/maven-wrapper.jar
 
 ### IntelliJ IDEA ###
+.idea
 backend/.idea
 backend/*.iml
 
+### Postman ###
+.postman
+postman
+
+### VS Code ###
+.vscode/
 
 ## Folder Maven : compile files and tests
 target/
@@ -16,4 +23,7 @@ target/
 
 ## Local data downloads
 data/raw/
+
+#config vscode
+.vscode/
 

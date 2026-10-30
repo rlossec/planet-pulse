@@ -34,9 +34,9 @@ Only records where **all** of the following fields are non-empty are kept:
 
 | Attribute | Description    | Notes                                                                    |
 | --------- | -------------- | ------------------------------------------------------------------------ |
-| name      | Subregion name | Unique **within** a region; the same name may exist in different regions |
+| **name**  | Subregion name | Unique across all subregions                                             |
 
-A subregion is linked to exactly one region (`1,1`). Its natural uniqueness is the pair `(name, region)`, not the name alone.
+A subregion is linked to exactly one region (`1,1`). Its natural identifier is its name.
 
 ### COUNTRY
 
