@@ -32,6 +32,8 @@ target/
 ## Local data downloads
 data/raw/
 
+# Local backend entity
+nbackend/src/main/java/co/simplon/planetpulse/entities/Country.java
+
 #config vscode
 .vscode
-

@@ -23,7 +23,7 @@ public class AnnualIndicator {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "iso_code_2", referencedColumnName = "iso_code_2")
-    private Country country;
+    Country country;
 
     @Column(name = "year_")
     private Short year;
