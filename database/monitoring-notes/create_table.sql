@@ -10,4 +10,3 @@ CREATE TABLE t_monitoring_note (
     CONSTRAINT uk_monitoring_note UNIQUE (created_at),
     CONSTRAINT fk_monitoring_note_country FOREIGN KEY (iso_code_2) REFERENCES t_countries (iso_code_2)
 );
-
