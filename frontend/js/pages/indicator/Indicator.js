@@ -4,6 +4,7 @@ import '../../components/indicator-list/IndicatorList.js';
 import indicatorMessages from '../../../i18n/en/indicators.js';
 
 export default class Indicator extends PageComponent {
+    #successTimeout = null;
 
     beforeRender() {
         document.title = indicatorMessages.title;
@@ -32,9 +33,7 @@ export default class Indicator extends PageComponent {
                             </div>
                         </div>
                     </div>
-                    <p id="update-success" class="alert alert-success d-none" role="status" aria-live="polite">
-                        ${indicatorMessages.updateSuccess}
-                    </p>
+                    <p id="operation-success" class="alert alert-success d-none" role="status" aria-live="polite"></p>
                     <div id="form-container"></div>
                 </div>
             </main>`;
@@ -56,7 +55,7 @@ export default class Indicator extends PageComponent {
         const formContainer = this.querySelector('#form-container');
         formContainer.addEventListener('indicator-cancel', () => this.#hideForm());
         // The entry is saved by the form: reload the list to display it
-        formContainer.addEventListener('indicator-submit', () => this.#showList());
+        formContainer.addEventListener('indicator-submit', () => this.#handleCreated());
         // The entry is updated by the form: close it, confirm, and reload the list
         formContainer.addEventListener('indicator-update', () => this.#handleUpdated());
 
@@ -85,7 +84,7 @@ export default class Indicator extends PageComponent {
     // Without argument: form to create an entry. With an entry: form to edit it
     #showForm(indicator = null) {
         const container = this.querySelector('#form-container');
-        this.#hideUpdateSuccess();
+        this.#hideSuccess();
         container.replaceChildren();
         this.attachChild(container, 'indicator-form', { isoCode2: this.state.isoCode2, indicator });
 
@@ -104,19 +103,32 @@ export default class Indicator extends PageComponent {
         button.setAttribute('aria-expanded', 'false');
     }
 
+    #handleCreated() {
+        this.#handleSaved(indicatorMessages.form.success);
+    }
+
     #handleUpdated() {
+        this.#handleSaved(indicatorMessages.updateSuccess);
+    }
+
+    #handleSaved(message) {
         this.#hideForm();
         this.#showList();
-        this.#showUpdateSuccess();
+        this.#showSuccess(message);
     }
 
-    #showUpdateSuccess() {
-        this.querySelector('#update-success').classList.remove('d-none');
-        setTimeout(() => this.#hideUpdateSuccess(), 4000);
+    #showSuccess(message) {
+        const success = this.querySelector('#operation-success');
+        success.textContent = message;
+        success.classList.remove('d-none');
+        clearTimeout(this.#successTimeout);
+        this.#successTimeout = setTimeout(() => this.#hideSuccess(), 4000);
     }
 
-    #hideUpdateSuccess() {
-        this.querySelector('#update-success').classList.add('d-none');
+    #hideSuccess() {
+        clearTimeout(this.#successTimeout);
+        this.#successTimeout = null;
+        this.querySelector('#operation-success').classList.add('d-none');
     }
 }
 

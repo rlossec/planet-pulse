@@ -46,9 +46,6 @@ export default class IndicatorForm extends AppComponent {
             </div>
             <!-- Validation Error Message if an error exist (d-none removed)-->
             <p id="validation-error" class="alert alert-danger mt-3 mb-0 d-none" role="alert"></p>
-            <p id="success-message" class="alert alert-success mt-3 mb-0 d-none" role="status" aria-live="polite">
-                ${indicatorMessages.form.success}
-            </p>
             <div class="indicator-form-actions mt-4 pt-3 border-top d-flex justify-content-center gap-2">
                 <button type="submit" class="btn btn-success px-4">${indicatorMessages.form.save}</button>
                 <button id="cancel-form-btn" type="button" class="btn btn-outline-secondary px-4">${indicatorMessages.form.cancel}</button>
@@ -83,9 +80,7 @@ export default class IndicatorForm extends AppComponent {
         }
 
         data.isoCode2 = this.props.isoCode2;
-
         this.#hideError();
-        this.#hideSuccess();
         if (submitter) {
             submitter.disabled = true;
         }
@@ -102,7 +97,6 @@ export default class IndicatorForm extends AppComponent {
                     // The page closes the form, shows the confirmation and reloads the list
                     this.dispatchEvent(new CustomEvent('indicator-update', { detail: data, bubbles: true }));
                 } else {
-                    this.#showSuccess();
                     this.dispatchEvent(new CustomEvent('indicator-submit', { detail: data, bubbles: true }));
                 }
             })
@@ -126,14 +120,6 @@ export default class IndicatorForm extends AppComponent {
         const validationError = this.querySelector('#validation-error');
         validationError.textContent = null;
         validationError.classList.add('d-none');
-    }
-
-    #showSuccess() {
-        this.querySelector('#success-message').classList.remove('d-none');
-    }
-
-    #hideSuccess() {
-        this.querySelector('#success-message').classList.add('d-none');
     }
 
     #handleCancel() {
