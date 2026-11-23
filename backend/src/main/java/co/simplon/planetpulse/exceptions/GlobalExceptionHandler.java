@@ -38,7 +38,9 @@ public class GlobalExceptionHandler {
 
         for (ObjectError objectError : bindingResult.getGlobalErrors()) {
             String message = objectError.getDefaultMessage();
-            if (errors.isEmpty() && "INDICATOR_ALREADY_EXISTS".equals(message)) {
+            if (errors.isEmpty()
+                    && ("INDICATOR_ALREADY_EXISTS".equals(message)
+                            || "TARGET_ALREADY_EXISTS".equals(message))) {
                 return buildResponse(HttpStatus.CONFLICT, message);
             }
             errors.putIfAbsent("object", message);
@@ -69,6 +71,12 @@ public class GlobalExceptionHandler {
         }
         if (cause != null && cause.contains("uq_annual_indicators_country_year")) {
             return buildResponse(HttpStatus.CONFLICT, "INDICATOR_ALREADY_EXISTS");
+        }
+        if (cause != null && cause.contains("fk_annual_targets_country")) {
+            return buildResponse(HttpStatus.BAD_REQUEST, "UNKNOWN_COUNTRY_CODE");
+        }
+        if (cause != null && cause.contains("uq_annual_targets_country_year")) {
+            return buildResponse(HttpStatus.CONFLICT, "TARGET_ALREADY_EXISTS");
         }
 
         LOGGER.error("Unexpected data integrity violation", ex);

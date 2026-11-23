@@ -31,6 +31,7 @@ export default class HeaderComponent extends AppComponent {
             <div class="navbar-nav ms-sm-auto gap-lg-2">
               <a class="nav-link" href="/countries/">Countries</a>
               <a class="nav-link" href="/indicators/">Indicators</a>
+              <a class="nav-link" href="/targets/">Targets</a>
               <a class="nav-link" href="/import-data/">Import data</a>
             </div>
           </div>
