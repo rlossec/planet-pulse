@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS t_annual_indicators;
+DROP TABLE IF EXISTS t_annual_indicators CASCADE;

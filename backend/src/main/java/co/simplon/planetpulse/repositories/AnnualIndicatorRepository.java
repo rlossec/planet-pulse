@@ -8,7 +8,7 @@ import co.simplon.planetpulse.entities.AnnualIndicator;
 
 public interface AnnualIndicatorRepository extends JpaRepository<AnnualIndicator, Integer> {
 
-    boolean existsByIsoCode2AndYear(String isoCode2, Short year);
+    boolean existsByCountry_IsoCode2AndYear(String isoCode2, Short year);
 
-    List<AnnualIndicator> findByIsoCode2OrderByYearDesc(String isoCode2);
+    List<AnnualIndicator> findByCountry_IsoCode2OrderByYearDesc(String isoCode2);
 }

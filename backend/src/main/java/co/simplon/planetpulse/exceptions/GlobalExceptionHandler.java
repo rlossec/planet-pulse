@@ -11,10 +11,13 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
+
+import co.simplon.planetpulse.dtos.ApiErrorDto;
 
 //@RestontrollerAdvice une classe qui s’applique à tous les Controllers.
 //Quand une exception remonte, Spring cherche ici une méthode qui sait la traiter, avant de répondre par défaut.
@@ -26,47 +29,59 @@ public class GlobalExceptionHandler {
     //@ExceptionHandler indique à Spring que cette méthode sait gérer une exception particulière. 
     //Quand une exception de ce type remonte, Spring appelle cette méthode pour construire la réponse HTTP.
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiErrorDto> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new LinkedHashMap<>();
-        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+        var bindingResult = ex.getBindingResult();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
             errors.putIfAbsent(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("message", "Validation failed.");
-        body.put("errors", errors);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+        for (ObjectError objectError : bindingResult.getGlobalErrors()) {
+            String message = objectError.getDefaultMessage();
+            if (errors.isEmpty() && "INDICATOR_ALREADY_EXISTS".equals(message)) {
+                return buildResponse(HttpStatus.CONFLICT, message);
+            }
+            errors.putIfAbsent("object", message);
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiErrorDto("VALIDATION_FAILED", errors));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, Object>> handleUnreadable() {
-        return buildResponse(HttpStatus.BAD_REQUEST, "Request body is missing or malformed.");
+    public ResponseEntity<ApiErrorDto> handleUnreadable() {
+        return buildResponse(HttpStatus.BAD_REQUEST, "REQUEST_BODY_INVALID");
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Map<String, Object>> handleResponseStatus(ResponseStatusException ex) {
-        return buildResponse(ex.getStatusCode(), ex.getReason());
+    public ResponseEntity<ApiErrorDto> handleResponseStatus(ResponseStatusException ex) {
+        return buildResponse(ex.getStatusCode(), ex.getReason() == null
+                ? "UNEXPECTED_ERROR"
+                : ex.getReason());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Map<String, Object>> handleDataIntegrity(DataIntegrityViolationException ex) {
+    public ResponseEntity<ApiErrorDto> handleDataIntegrity(DataIntegrityViolationException ex) {
         String cause = ex.getMostSpecificCause().getMessage();
 
-        if (cause != null && cause.contains("fk_annual_indicator_country")) {
-            return buildResponse(HttpStatus.BAD_REQUEST, "Unknown country code.");
+        if (cause != null && cause.contains("fk_annual_indicators_country")) {
+            return buildResponse(HttpStatus.BAD_REQUEST, "UNKNOWN_COUNTRY_CODE");
         }
-        if (cause != null && cause.contains("uq_annual_indicator_country_year")) {
-            return buildResponse(HttpStatus.CONFLICT,
-                    "Indicators already exist for this country and year.");
+        if (cause != null && cause.contains("uq_annual_indicators_country_year")) {
+            return buildResponse(HttpStatus.CONFLICT, "INDICATOR_ALREADY_EXISTS");
         }
 
         LOGGER.error("Unexpected data integrity violation", ex);
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected server error.");
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "UNEXPECTED_ERROR");
     }
 
-    private ResponseEntity<Map<String, Object>> buildResponse(HttpStatusCode status, String message) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("message", message);
-        return ResponseEntity.status(status).body(body);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiErrorDto> handleUnexpected(Exception ex) {
+        LOGGER.error("Unexpected API error", ex);
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "UNEXPECTED_ERROR");
+    }
+
+    private ResponseEntity<ApiErrorDto> buildResponse(HttpStatusCode status, String code) {
+        return ResponseEntity.status(status).body(new ApiErrorDto(code, Map.of()));
     }
 }

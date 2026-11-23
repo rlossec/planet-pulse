@@ -1,9 +1,10 @@
 package co.simplon.planetpulse.dtos;
 
 import java.math.BigDecimal;
-import java.time.Year;
 
-import jakarta.validation.constraints.AssertTrue;
+import co.simplon.planetpulse.dtos.constraints.AtLeastOneIndicatorProvided;
+import co.simplon.planetpulse.dtos.constraints.ExistsByIsoCodeAndYear;
+import co.simplon.planetpulse.dtos.constraints.IsYearNotInFuture;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
@@ -12,38 +13,32 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+@AtLeastOneIndicatorProvided
+@ExistsByIsoCodeAndYear
 public record AnnualIndicatorCreateDto(
-        @NotBlank(message = "Country code is required.")
-        @Pattern(regexp = "[A-Z]{2}", message = "Country code must be 2 uppercase letters.")
+        @NotBlank(message = "COUNTRY_CODE_REQUIRED")
+        @Pattern(regexp = "[A-Z]{2}", message = "COUNTRY_CODE_FORMAT")
         String isoCode2,
 
-        @NotNull(message = "Year is required.")
-        @Min(value = 1850, message = "Year must be 1850 or later.")
+        
+        @NotNull(message = "YEAR_REQUIRED")
+        @Min(value = 1850, message = "YEAR_MINIMUM")
+        @IsYearNotInFuture
         Integer year,
 
-        @Min(value = 0, message = "Minimum CO2 annual emissions is 0.")
+        @Min(value = 0, message = "CO2_MINIMUM")
         Integer co2,
 
-        @DecimalMin(value = "0", message = "Renewable energy must be between 0 and 100.")
-        @DecimalMax(value = "100", message = "Renewable energy must be between 0 and 100.")
-        @Digits(integer = 3, fraction = 1, message = "Renewable energy must have at most 1 decimal.")
+        @DecimalMin(value = "0", message = "RENEWABLE_ENERGY_RANGE")
+        @DecimalMax(value = "100", message = "RENEWABLE_ENERGY_RANGE")
+        @Digits(integer = 3, fraction = 1, message = "RENEWABLE_ENERGY_PRECISION")
         BigDecimal renewableEnergy,
 
-        @DecimalMin(value = "0", message = "Forest area value must be between 0 and 100.")
-        @DecimalMax(value = "100", message = "Forest area must be between 0 and 100.")
-        @Digits(integer = 3, fraction = 2, message = "Forest area must have at most 2 decimals.")
+        @DecimalMin(value = "0", message = "FOREST_RANGE")
+        @DecimalMax(value = "100", message = "FOREST_RANGE")
+        @Digits(integer = 3, fraction = 2, message = "FOREST_PRECISION")
         BigDecimal forest,
 
-        @Min(value = 0, message = "Minimum PM2.5 emissions is 0.")
+        @Min(value = 0, message = "PM25_MINIMUM")
         Integer pm25) {
-
-    @AssertTrue(message = "At least one indicator value must be provided.")
-    public boolean isAtLeastOneIndicatorProvided() {
-        return co2 != null || renewableEnergy != null || forest != null || pm25 != null;
-    }
-
-    @AssertTrue(message = "Year cannot be in the future.")
-    public boolean isYearNotInFuture() {
-        return year == null || year <= Year.now().getValue();
-    }
 }

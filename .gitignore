@@ -3,6 +3,13 @@ HELP.md
 ## Config Maven
 backend/.mvn/wrapper/maven-wrapper.jar
 
+## Eclipse
+.settings/
+.project
+backend/.classpath
+backend/.project
+backend/.settings/
+
 ### IntelliJ IDEA ###
 .idea
 backend/.idea
@@ -14,6 +21,7 @@ postman
 
 ### VS Code ###
 .vscode/
+.vscode/settings.json
 
 ## Folder Maven : compile files and tests
 target/
@@ -24,6 +32,8 @@ target/
 ## Local data downloads
 data/raw/
 
+# Local backend entity
+nbackend/src/main/java/co/simplon/planetpulse/entities/Country.java
+
 #config vscode
 .vscode
-
