@@ -1,7 +1,5 @@
 package co.simplon.planetpulse.utils;
 
-import java.util.Locale;
-
 public final class NameUtils {
 
     private NameUtils() {

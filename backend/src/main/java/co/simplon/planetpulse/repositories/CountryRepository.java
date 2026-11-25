@@ -10,7 +10,7 @@ import co.simplon.planetpulse.entities.Country;
 
 public interface CountryRepository extends JpaRepository<Country, Integer> {
 
-    Optional<Country> findByIsoCode(String isoCode2);
+    Optional<Country> findByIsoCode2(String isoCode2);
 
     // JPQL query to get all ISO codes
     @Query("SELECT c.isoCode2 FROM Country c")
