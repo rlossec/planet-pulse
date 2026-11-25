@@ -31,7 +31,7 @@ public class AnnualTargetService {
     @Transactional
     public void create(AnnualTargetCreateDto dto) {
         Short year = dto.year().shortValue();
-        Country country = countryRepository.findByIsoCode2(dto.isoCode2())
+        Country country = countryRepository.findByIsoCode(dto.isoCode2())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.BAD_REQUEST, "UNKNOWN_COUNTRY_CODE"));
 
