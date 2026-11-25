@@ -44,6 +44,10 @@ database/
     │   │   ├── 02_dml_insert_annual_indicators.sql
     │   │   └── reset/
     │   │       └── ddl_drop_tables.sql
+    │   ├── 03_targets/
+    │   │   ├── 01_ddl_create_tables.sql
+    │   │   └── reset/
+    │   │       └── ddl_drop_tables.sql
     │   └── 03_monitoring-notes/
     │       └── 01_ddl_create_tables.sql
     └── checks/

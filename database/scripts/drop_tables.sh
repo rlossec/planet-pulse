@@ -6,6 +6,7 @@ source "$(dirname "$0")/_common.sh"
 
 # Reverse order of creation: referencing tables first.
 scripts=(
+    features/03_targets/reset/ddl_drop_tables.sql
     features/02_indicators/reset/ddl_drop_tables.sql
     features/01_countries/reset/ddl_drop_tables.sql
 )

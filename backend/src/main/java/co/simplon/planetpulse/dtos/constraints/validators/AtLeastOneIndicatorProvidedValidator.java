@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import co.simplon.planetpulse.dtos.AnnualIndicatorCreateDto;
 import co.simplon.planetpulse.dtos.AnnualIndicatorUpdateDto;
+import co.simplon.planetpulse.dtos.AnnualTargetCreateDto;
+import co.simplon.planetpulse.dtos.AnnualTargetUpdateDto;
 import co.simplon.planetpulse.dtos.constraints.AtLeastOneIndicatorProvided;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -24,6 +26,14 @@ public final class AtLeastOneIndicatorProvidedValidator
         }
 
         if (value instanceof AnnualIndicatorUpdateDto dto) {
+            return hasIndicator(dto.co2(), dto.renewableEnergy(), dto.forest(), dto.pm25());
+        }
+
+        if (value instanceof AnnualTargetCreateDto dto) {
+            return hasIndicator(dto.co2(), dto.renewableEnergy(), dto.forest(), dto.pm25());
+        }
+
+        if (value instanceof AnnualTargetUpdateDto dto) {
             return hasIndicator(dto.co2(), dto.renewableEnergy(), dto.forest(), dto.pm25());
         }
 
