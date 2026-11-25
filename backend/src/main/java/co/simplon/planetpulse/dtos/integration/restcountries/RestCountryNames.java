@@ -1,4 +1,6 @@
 package co.simplon.planetpulse.dtos.integration.restcountries;
 
-public record RestCountryNames(String common) {
+import jakarta.validation.constraints.NotBlank;
+
+public record RestCountryNames(@NotBlank String common) {
 }

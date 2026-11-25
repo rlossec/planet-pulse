@@ -1,4 +1,6 @@
 package co.simplon.planetpulse.dtos.integration.restcountries;
 
-public record RestCountryArea(Long kilometers) {
+import jakarta.validation.constraints.NotNull;
+
+public record RestCountryArea(@NotNull Long kilometers) {
 }
