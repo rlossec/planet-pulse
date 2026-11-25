@@ -12,7 +12,7 @@ public class CountryMapper {
     public Country toEntity(RestCountry inputs) {
         Country country = new Country();
         country.setName(inputs.names().common());
-        country.setIsoCode(inputs.codes().alpha_2());
+        country.setIsoCode2(inputs.codes().alpha_2());
         country.setFlag(inputs.flag().url_svg());
 
         country.setPopulation(inputs.population());

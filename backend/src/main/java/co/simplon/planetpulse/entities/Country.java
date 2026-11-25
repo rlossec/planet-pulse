@@ -40,7 +40,7 @@ public class Country {
     private BigDecimal area;
 
     @Column(name = "population", nullable = false)
-    private Integer population;
+    private Long population;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subregion_id", nullable = false)
@@ -89,11 +89,11 @@ public class Country {
         this.area = area;
     }
 
-    public Integer getPopulation() {
+    public Long getPopulation() {
         return population;
     }
 
-    public void setPopulation(Integer population) {
+    public void setPopulation(Long population) {
         this.population = population;
     }
 
