@@ -26,6 +26,14 @@ public class Subregion {
     @JoinColumn(name = "region_id")
     Region region;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Region getRegion() {
         return region;
     }
