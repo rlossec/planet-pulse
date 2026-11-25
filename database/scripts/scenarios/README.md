@@ -4,9 +4,11 @@
 
 | Scenario | What it does |
 | --- | --- |
-| `01_full_restart.sh` | Drops the configured database, recreates it, checks the connection, creates the tables, checks the empty tables, inserts reference data, and checks the populated tables. |
-| `02_data_restart.sh` | Drops and recreates the feature tables, checks the empty tables, inserts reference data, and checks the populated tables. |
-| `03_tables_restart.sh` | Checks the connection, drops and recreates the feature tables, checks the empty tables, inserts reference data, and checks the populated tables. |
+| `01_full_restart.sh` | Drops the configured database, recreates it, checks the connection, creates the tables, checks the empty tables, runs `04_insert.sh`, and checks the tables again. |
+| `02_data_restart.sh` | Drops and recreates the feature tables, checks the empty tables, runs `04_insert.sh`, and checks the tables again. |
+| `03_tables_restart.sh` | Checks the connection, drops and recreates the feature tables, checks the empty tables, runs `04_insert.sh`, and checks the tables again. |
+
+`04_insert.sh` does not load regions, subregions or countries. Those rows come from `POST /import-data`. It does not load annual indicators either: that seed references country codes which are not in the database until the import has run.
 
 ## Important
 
