@@ -14,4 +14,4 @@
 | 10  | A country area is expressed in km² and is strictly greater than 0.                                             |
 | 11  | A country population is an integer greater than or equal to 0.                                                 |
 | 12  | A subregion name is unique across all subregions, including when they belong to different regions.            |
-| 13  | A source record missing name, ISO code, flag, region, subregion, area or population is not kept in the model.  |
+| 13  | At import, a source record with a blank name, ISO code, flag, region or subregion, or a missing area or population, is skipped. |

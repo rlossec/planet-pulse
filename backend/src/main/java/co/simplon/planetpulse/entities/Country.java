@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
 @Entity
 @Table(name = "t_countries")
 public class Country {
@@ -31,6 +32,7 @@ public class Country {
     @Column(name = "iso_code_2", length = 2, nullable = false)
     private String isoCode2;
 
+
     @Column(name = "flag_url", nullable = false)
     private String flag;
 
@@ -38,7 +40,7 @@ public class Country {
     private BigDecimal area;
 
     @Column(name = "population", nullable = false)
-    private Integer population;
+    private Long population;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subregion_id", nullable = false)
@@ -59,7 +61,6 @@ public class Country {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -88,11 +89,11 @@ public class Country {
         this.area = area;
     }
 
-    public Integer getPopulation() {
+    public Long getPopulation() {
         return population;
     }
 
-    public void setPopulation(Integer population) {
+    public void setPopulation(Long population) {
         this.population = population;
     }
 
