@@ -6,8 +6,8 @@ import {
     isValidIntegerRange,
     isValidDecimalRange,
     getCurrentYear,
-} from '../../utils/inputFormValidation.js';
-import targetMessages from '../../../i18n/en/targets.js';
+} from '../../../utils/inputFormValidation.js';
+import targetMessages from '../../../../i18n/en/targets.js';
 
 export const TargetValidationError = Object.freeze({
     YEAR_REQUIRED: targetMessages.validation.yearRequired,

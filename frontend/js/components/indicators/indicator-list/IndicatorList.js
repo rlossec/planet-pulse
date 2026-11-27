@@ -1,6 +1,6 @@
-import AppComponent from '../../base/AppComponent.js';
-import indicatorMessages from '../../../i18n/en/indicators.js';
-import { getIndicators, deleteIndicator } from '../../services/indicatorService.js';
+import AppComponent from '../../../base/AppComponent.js';
+import indicatorMessages from '../../../../i18n/en/indicators.js';
+import { getIndicators, deleteIndicator } from '../../../services/indicatorService.js';
 
 export default class IndicatorList extends AppComponent {
 

@@ -1,6 +1,6 @@
-import AppComponent from '../../base/AppComponent.js';
-import targetMessages from '../../../i18n/en/targets.js';
-import { getTargets, deleteTarget } from '../../services/targetService.js';
+import AppComponent from '../../../base/AppComponent.js';
+import targetMessages from '../../../../i18n/en/targets.js';
+import { getTargets, deleteTarget } from '../../../services/targetService.js';
 
 export default class TargetList extends AppComponent {
 

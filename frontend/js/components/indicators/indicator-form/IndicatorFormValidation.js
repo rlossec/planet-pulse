@@ -6,8 +6,8 @@ import {
     isValidIntegerRange,
     isValidDecimalRange, 
     getCurrentYear,
-} from '../../utils/inputFormValidation.js';
-import indicatorMessages from '../../../i18n/en/indicators.js';
+} from '../../../utils/inputFormValidation.js';
+import indicatorMessages from '../../../../i18n/en/indicators.js';
 
 export const IndicatorValidationError = Object.freeze({
     YEAR_REQUIRED: indicatorMessages.validation.yearRequired,

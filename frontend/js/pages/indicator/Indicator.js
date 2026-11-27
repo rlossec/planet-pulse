@@ -1,6 +1,6 @@
 import PageComponent from '../../base/PageComponent.js';
-import '../../components/indicator-form/IndicatorForm.js';
-import '../../components/indicator-list/IndicatorList.js';
+import '../../components/indicators/indicator-form/indicatorForm.js';
+import '../../components/indicators/indicator-list/IndicatorList.js';
 import indicatorMessages from '../../../i18n/en/indicators.js';
 
 export default class Indicator extends PageComponent {

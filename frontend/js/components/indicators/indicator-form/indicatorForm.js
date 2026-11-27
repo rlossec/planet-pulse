@@ -1,8 +1,8 @@
-import AppComponent from '../../base/AppComponent.js';
+import AppComponent from '../../../base/AppComponent.js';
 import indicatorValidation from './IndicatorFormValidation.js';
-import { getCurrentYear } from '../../utils/inputFormValidation.js';
-import indicatorMessages from '../../../i18n/en/indicators.js';
-import { createIndicator, updateIndicator } from '../../services/indicatorService.js';
+import { getCurrentYear } from '../../../utils/inputFormValidation.js';
+import indicatorMessages from '../../../../i18n/en/indicators.js';
+import { createIndicator, updateIndicator } from '../../../services/indicatorService.js';
 
 export default class IndicatorForm extends AppComponent {
 

@@ -1,6 +1,6 @@
 import PageComponent from '../../base/PageComponent.js';
-import '../../components/target-form/TargetForm.js';
-import '../../components/target-list/TargetList.js';
+import '../../components/targets/target-form/TargetForm.js';
+import '../../components/targets/target-list/TargetList.js';
 import targetMessages from '../../../i18n/en/targets.js';
 
 export default class Target extends PageComponent {

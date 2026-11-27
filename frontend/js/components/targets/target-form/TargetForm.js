@@ -1,8 +1,8 @@
-import AppComponent from '../../base/AppComponent.js';
+import AppComponent from '../../../base/AppComponent.js';
 import targetValidation from './TargetFormValidation.js';
-import { getCurrentYear } from '../../utils/inputFormValidation.js';
-import targetMessages from '../../../i18n/en/targets.js';
-import { createTarget, updateTarget } from '../../services/targetService.js';
+import { getCurrentYear } from '../../../utils/inputFormValidation.js';
+import targetMessages from '../../../../i18n/en/targets.js';
+import { createTarget, updateTarget } from '../../../services/targetService.js';
 
 export default class TargetForm extends AppComponent {
 
